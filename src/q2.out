@@ -1,0 +1,101 @@
+?- main. load. 'birds-en.nkb'.
+This is the native Prolog shell.
+Type help. load. solve. trace. dump. how(Goal). whynot(Goal). or quit.
+at the prompt. You can type why. during solve if curious.
+> Enter file name in single quotes (ex. 'birds.nkb'.): %  op compiled 0.00 sec, 264 bytes
+Warning: /home/dennis/Desktop/Dropbox/School/11-12/4P79-Expert_Systems/assignments/a3/q2/birds-en.nkb:178:
+  Clauses of (iz)/2 are not together in the source-file
+Warning: /home/dennis/Desktop/Dropbox/School/11-12/4P79-Expert_Systems/assignments/a3/q2/birds-en.nkb:182:
+  Clauses of (iz)/2 are not together in the source-file
+Warning: /home/dennis/Desktop/Dropbox/School/11-12/4P79-Expert_Systems/assignments/a3/q2/birds-en.nkb:183:
+  Clauses of (are)/2 are not together in the source-file
+Warning: /home/dennis/Desktop/Dropbox/School/11-12/4P79-Expert_Systems/assignments/a3/q2/birds-en.nkb:184:
+  Clauses of (iz)/2 are not together in the source-file
+% birds-en.nkb compiled 0.01 sec, 23,192 bytes
+> solve.
+nostrils:external_tubular? (yes or no) > why.
+    because ask(nostrils,external_tubular)
+|: why.
+    because nostrils are external_tubular
+|: why.
+    because order iz tubenose
+|: why.
+    because family iz albatross
+|: why.
+    because bird iz laysan_albatross
+|: why.
+    because top_goal(laysan_albatross)
+|: yes.
+
+feet:webbed? (yes or no) > yes.
+
+bill:flat? (yes or no) > yes.
+
+neck:long? (yes or no) > yes.
+
+color:white? (yes or no) > yes.
+
+What is the value for flight?
+1  : ponderous
+2  : powerful
+3  : agile
+4  : flap_glide
+5  : other
+Enter the number of choice> > 1.
+
+yes.
+
+The answer is whistling_swan
+> trace.
+Trace on.
+> solve.
+Solving top_goal(_G4)...
+  Solving bird iz _G4...
+    Solving family iz albatross...
+      Solving order iz tubenose...
+        Solving nostrils are external_tubular...
+nostrils:external_tubular? (yes or no) > yes.
+
+        Solved nostrils are external_tubular.
+
+        Solving live iz at_sea...
+live:at_sea? (yes or no) > yes.
+
+        Solved live iz at_sea.
+
+        Solving bill iz hooked...
+bill:hooked? (yes or no) > yes.
+
+        Solved bill iz hooked.
+
+      Solved order iz tubenose.
+
+      Solving size iz large...
+What is the value for size?
+1  : large
+2  : plump
+3  : medium
+4  : small
+1.
+
+      Solved size iz large.
+
+      Solving wings are long_narrow...
+wings:long_narrow? (yes or no) > yes.
+
+      Solved wings are long_narrow.
+
+    Solved family iz albatross.
+
+    Solving color iz white...
+color:white? (yes or no) > yes.
+
+    Solved color iz white.
+
+  Solved bird iz laysan_albatross.
+
+Solved top_goal(laysan_albatross).
+
+The answer is laysan_albatross
+> halt.
+true .

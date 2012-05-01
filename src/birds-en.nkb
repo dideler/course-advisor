@@ -1,0 +1,200 @@
+:- consult(op).
+
+top_goal(X) :- bird iz X.
+
+order iz tubenose:-
+    nostrils are external_tubular,
+    live iz at_sea,
+    bill iz hooked.
+    
+order iz waterfowl:-
+    feet iz webbed,
+    bill iz flat.
+    
+order iz falconiforms:-
+    eats on meat,
+    feet iz curved_talons,
+    bill iz sharp_hooked.
+    
+order iz passerformes:-
+    feet iz one_long_backward_toe.
+    
+family iz albatross:-
+    order iz tubenose,
+    size iz large,
+    wings are long_narrow.
+    
+family iz swan :-
+    order iz waterfowl,
+    neck iz long,
+    color iz white,
+    flight iz ponderous.
+    
+family iz goose:-
+    order iz waterfowl,
+    size iz plump,
+    flight iz powerful.
+    
+family iz duck:-
+    order iz waterfowl,
+    feed iz on_water_surface,
+    flight iz agile.
+    
+family iz vulture:-
+    order iz falconiforms,
+    feed iz scavange,
+    wings are broad.
+    
+family iz falcon:-
+    order iz falconiforms,
+    wings are long_pointed,
+    head iz large,
+    tail iz narrow_at_tip.
+    
+family iz flycatcher:-
+    order iz passerformes,
+    bill iz flat,
+    eats on flying_insects.
+
+family iz swallow:-
+    order iz passerformes,
+    wings are long_pointed,
+    tail iz forked,
+    bill iz short.
+    
+bird iz laysan_albatross:-
+    family iz albatross,
+    color iz white.
+    
+bird iz black_footed_albatross:-
+    family iz albatross,
+    color iz dark.
+
+bird iz fulmar:-
+    order iz tubenose,
+    size iz medium,
+    flight iz flap_glide.
+    
+bird iz whistling_swan:-
+    family iz swan,
+    voice iz muffled_musical_whistle.
+    
+bird iz trumpeter_swan:-
+    family iz swan,
+    voice iz loud_trumpeting.
+
+bird iz canada_goose:-
+    family iz goose,
+    season iz winter,            % rules can be further broken down
+    country iz united_states,        % to include regions and migration
+    head iz black,                % patterns
+    cheek iz white.
+    
+bird iz canada_goose:-
+    family iz goose,
+    season iz summer,
+    country iz canada,
+    head iz black,   
+    cheek iz white.
+
+bird iz snow_goose:-
+    family iz goose,
+    color iz white.
+    
+bird iz mallard :-
+    family iz duck,            % different rules for male
+    voice iz quack,
+    head iz green.
+    
+bird iz mallard:-
+    family iz duck,            % and female
+    voice iz quack,
+    color iz mottled_brown.
+    
+bird iz pintail:-
+    family iz duck,
+    voice iz short_whistle.
+    
+bird iz turkey_vulture:-
+    family iz vulture,
+    flight_profile iz v_shaped.
+    
+bird iz california_condor:-
+    family iz vulture,
+    flight_profile iz flat.
+    
+bird iz sparrow_hawk:-
+    family iz falcon,
+    eats on insects.
+    
+bird iz peregrine_falcon:-
+    family iz falcon,
+    eats on birds.
+    
+bird iz great_crested_flycatcher :-
+    family iz flycatcher,
+    tail iz long_rusty.
+    
+bird iz ash_throated_flycatcher :-
+    family iz flycatcher,
+    throat iz white.
+    
+bird iz barn_swallow:-
+    family iz swallow,
+    tail iz forked.
+    
+bird iz cliff_swallow:-
+    family iz swallow,
+    tail iz square.
+    
+bird iz purple_martin:-
+    family iz swallow,
+    color iz dark.
+
+country iz united_states :- region(new_england).
+country iz united_states :- region(south_east).
+country iz united_states :- region(mid_west).
+country iz united_states :- region(south_west).
+country iz united_states :- region(north_west).
+country iz united_states :- region(mid_atlantic).
+
+country iz canada :- province(ontario).
+country iz canada :- province(quebec).
+country iz canada :- province(etc).
+
+region iz new_england :-
+    state iz X,
+    member(X, [massachusetts, vermont, etc]).
+
+region iz south_east :-
+    state iz X,
+    member(X, [florida, mississippi, etc]).
+
+region iz canada :-
+    province iz X,
+    member(X, [ontario,quebec,etc]).
+
+nostrils are X :- ask(nostrils,X).
+live iz X :- ask(live,X).
+bill iz X :- ask(bill,X).
+size iz X :- menuask(size,X,[large,plump,medium,small]).
+eats on X :- ask(eats,X).
+feet iz X :- ask(feet,X).
+wings are X :- ask(wings,X).
+neck iz X :- ask(neck,X).
+color iz X :- ask(color,X).
+flight iz X :- menuask(flight,X,[ponderous,powerful,agile,flap_glide,other]).
+feed iz X :- ask(feed,X).
+head iz X :- ask(head,X).
+tail iz X :- menuask(tail,X,[narrow_at_tip,forked,long_rusty,square,other]).
+voice iz X :- ask(voice,X).
+season iz X :- menuask(season,X,[winter,summer]).
+cheek iz X :- ask(cheek,X).
+flight_profile iz X :- menuask(flight_profile,X,[flat,v_shaped,other]).
+throat iz X :- ask(throat,X).
+state iz X :- menuask(state,X,[massachusetts,vermont,florida,mississippi,etc]).
+province iz X :- menuask(province,X,[ontario,quebec,etc]).
+
+multivalued(voice).
+%multivalued(color).
+multivalued(eats).
