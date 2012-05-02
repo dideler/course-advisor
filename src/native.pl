@@ -63,7 +63,7 @@ native_help :-
   write('    how. Explains why the most recent answer was chosen.'),nl,
   write('    whynot(Goal). Explains why Goal was not chosen.'),nl,
   write('    why. Explains why the current question is being asked.'),nl,
-  write('    quit. Terminates the program. \'halt.\' and \'exit.\' also work.'),nl.
+  write('    quit. Terminates the program. ''halt.'' and ''exit.'' also work.'),nl.
 
 load_kb :-
   write('Enter file name in single quotes (ex. ''birds.nkb''.): '),
@@ -105,23 +105,26 @@ trace_rules :- % if we get here, it is the first time trace is called.
 
 % Reads in the name of a rule (w/o args) then prints out all the rules for it.
 dump :-
-    write('Enter rule name without arguments (ex. ''order''.): '),
-    read(Rule),
-    %atom_concat(Rule,'(_)',GoalAtom), % Goal is atom, so variable won't unify.
-    atom_concat(Rule,' iz _',GoalAtom), % TODO decide which to use...
-    atom_to_term(GoalAtom,Goal,_), % Converts Goal to a term, variable unifies.
-    !,
-    clause(Goal,Body),
-    write(Goal), writeln(' if '), tab(4),
-    dump_rule(Body),
-    nl, fail. % Forces backtracking, tries to find more rules with same name.
+  known(kb,yes),
+  write('Enter rule name without arguments (ex. order.): '),
+  read(Rule),
+  %atom_concat(Rule,'(_)',GoalAtom), % Goal is atom, so variable won't unify.
+  atom_concat(Rule,' iz _',GoalAtom), % TODO: stick to one KB style...
+  atom_to_term(GoalAtom,Goal,_), % Converts Goal to a term, variable unifies.
+  !,
+  clause(Goal,Body),
+  write(Goal), writeln(' if '), tab(4),
+  dump_rule(Body),
+  nl, fail. % Forces backtracking, tries to find more rules with same name.
+dump :-
+  write('You must load a knowledge base before you can dump.'),nl.
 
 % If there are multiple facts, split and write them nicely.
 dump_rule((A,B)) :- 
-    !, dump_rule(A), write(' and '), dump_rule(B).
+  !, dump_rule(A), write(' and '), dump_rule(B).
 % Else write the single fact.
 dump_rule(Body) :-
-    write(Body).
+  write(Body).
 
 % "ask" asks the user for a yes or no answer to the question.
 % TODO: find out why multivalued does and is being used here.
