@@ -43,7 +43,7 @@ do(load) :- load_kb, !.
 do(solve) :- solve, !.
 do(trace) :- trace_rules, !.
 do(dump) :- !, dump. % Cut before dump so do(X) doesn't execute.
-do(how(Goal)) :- how(Goal), !.
+do(how) :- how, !.
 do(whynot(Goal)) :- whynot(Goal), !.
 do(quit).
 do(halt).
@@ -76,7 +76,9 @@ solve :-
   known(kb,yes), % Only continue if a KB has been loaded.
   abolish(known/3),
   prove(top_goal(X),[],0), % TODO: consider renaming top_goal to something more descriptive.
-  write('The answer is '),write(X),nl.
+  write('The answer is '),write(X),nl,
+  abolish(known/1), % Get rid of any previous answers.
+  asserta(known(X)).
 solve :-
   known(kb,no),
   write('You must load a knowledge base before you can solve.'), nl,
@@ -230,16 +232,20 @@ prove(Goal,Hist,_) :- % Single goal without trace.
 % The Why term is different from the How term.
 % Why contains the history of the search, which is built up inside outwards.
 % Why is relevant when the user is asked for input.
-% Why contains a nested set of all the goals that the expert system is trying to solve,
-% which justifies why the question was asked.
+% Why contains a nested set of all the goals that the expert system is trying
+% to solve, which justifies why the question was asked.
 %
-% How is developed outside inwards and contains the final proof when a goal is solved.
-% The purpose of How is the final explanation.
+% How is developed outside inwards and contains the final proof when a goal is
+% solved. The purpose of How is the final explanation.
 
-how(Goal) :-
-  clause(Goal,Body),
-  prove(Body,[],_),
-  write_body(4,Body).
+how :-
+  known(Goal),
+  clause(bird(Goal),Body), % TODO: Change to work with courses KB.
+  prove(Body,[],_),        % e.g. clause(course(Goal),Body). Look at top_goal.
+  write_body(4,Body),
+  !.
+how :-
+  write('You must solve a task first.'),nl.
 
 whynot(Goal) :-
   clause(Goal,Body),
