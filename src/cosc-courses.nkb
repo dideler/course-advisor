@@ -198,3 +198,140 @@ province iz X :- menuask(province,X,[ontario,quebec,etc]).
 multivalued(voice).
 %multivalued(color).
 multivalued(eats).
+
+%------------------------------------
+
+course(COSC_1P02) :- % Introduction to Computer Science
+course(COSC_1P03) :- % Data Structures and Abstraction
+  prerequisite(course(COSC_1P02).
+course(COSC_1P50) :- % Integrity and Literacy in the Information Age
+course(MATH_1P66) :- % Mathematical Reasoning
+course(MATH_1P67) :- % Mathematics for Computer Science
+  prerequisite(course(MATH_1P66).
+course(COSC_2P03) :- % Advanced Data Structures
+  prerequisite(course(COSC_1P03).
+course(COSC_2P12) :- % Computer Organization and Assembly Language
+  prerequisite(course(COSC_1P03).
+course(COSC_2P13) :- % Introduction to Operating Systems
+  prerequisite(course(COSC_2P12).
+course(COSC_2P32) :- % File and Database Systems
+  prerequisite(course(COSC_2P03).
+course(COSC_2P89) :- % Internet Technologies
+  prerequisite(course(COSC_1P03).
+course(COSC_2P90) :- % Programming Languages and Object-Orientation
+  prerequisite(course(COSC_1P03).
+course(COSC_2P91) :- % Procedural Programming
+  prerequisite(course(COSC_1P03).
+course(COSC_2P93) :- % Logic Programming
+  prerequisite(course(COSC_2P03).
+course(COSC_2P96) :- % Introduction to 3D Modelling and Animation (???)
+course(COSC_3F00) :- % Software Engineering
+  prerequisite(course(COSC_2P03).
+course(COSC_3P01) :- % Introduction to Computer Networking
+  prerequisite(course(COSC_2P03),
+  prerequisite(course(COSC_2P13),
+  prerequisite(course(MATH_1P67).
+course(COSC_3P03) :- % Algorithms
+  prerequisite(course(COSC_2P03).
+course(COSC_3P40) :- % Advanced Object-Oriented Programming
+course(COSC_3P71) :- % Artificial Intelligence
+  prerequisite(course(COSC_2P03).
+course(COSC_3P92) :- % Computer Architecture
+  prerequisite(course(COSC_2P13).
+course(COSC_3P93) :- % Parallel Computing
+  prerequisite(course(COSC_2P13).
+course(COSC_3P94) :- % Introduction to Human Computer Interaction
+course(COSC_3P95) :- % Embedded Software
+  prerequisite(course(COSC_2P13).
+course(COSC_3P96) :- % Discrete Event Simulation
+course(COSC_3P98) :- % Computer Graphics
+  prerequisite(course(COSC_2P03).
+course(COSC_3P99) :- % Computing Project
+  prerequisite(course(COSC_2P03).
+course(COSC_3V97) :- % Mobile Computing
+  prerequisite(course(COSC_2P13),
+  prerequisite(course(COSC_2P32).
+course(COSC_4F90) :- % Computing Project
+  prerequisite(course(COSC_3F00).
+course(COSC_4P03) :- % Advanced Algorithms
+  prerequisite(course(COSC_3P03).
+course(COSC_4P13) :- % Operating Systems: Design and Implementation
+  prerequisite(course(COSC_2P13),
+  prerequisite(course(COSC_2P91).
+course(COSC_4P14) :- % Computer Networks
+  prerequisite(course(COSC_3P01).
+course(COSC_4P41) :- % Functional Programming
+course(COSC_4P42) :- % Formal Methods in Software Engineering
+  prerequisite(course(MATH_1P67).
+course(COSC_4P61) :- % Theory of Computation
+  prerequisite(course(MATH_1P67).
+course(COSC_4P75) :- % Compiler Construction
+  prerequisite(course(COSC_2P03),
+  prerequisite(course(COSC_2P12),
+  prerequisite(course(COSC_2P90).
+course(COSC_4P76) :- % Machine Learning
+  prerequisite(course(COSC_3P71).
+course(COSC_4P78) :- % Robotics
+  prerequisite(course(COSC_3P71).
+course(COSC_4P79) :- % Expert Systems
+  prerequisite(course(COSC_2P93),
+  prerequisite(course(COSC_3P71).
+course(COSC_4P80) :- % Artificial Neural Networks
+  prerequisite(course(COSC_3P71).
+course(COSC_4P87) :- % Foundations of Reasoning under Uncertainty
+  prerequisite(course(COSC_3P71).
+course(COSC_4P98) :- % Topics in Computer Media and Digital Audio
+course(COSC_0N01) :- % Co-op Work Placement I
+course(COSC_0N02) :- % Co-op Work Placement II
+course(COSC_0N03) :- % Co-op Work Placement III
+course(COSC_2C01) :- % Co-op Reflective Learning and Integration I
+course(COSC_2C02) :- % Co-op Reflective Learning and Integration II
+course(COSC_2C03) :- % Co-op Reflective Learning and Integration III
+  prerequisite()
+
+
+% Computer Science as a second degree program.
+% - Holding an honours or Pass degree in another discipline (TODO: ask)
+% - The additional courses taken for a second degree in Computer Science must
+%   include a minimum of five (for a subsequent 20 credit degree) or four
+%   (for a second Pass degree) Brock COSC credits. All elective credits should
+%   be numbered 2(alpha)00 or above.
+%
+% Honours (TODO)
+%
+% BSc with Major (TODO)
+%
+% Pass
+% Year 1
+%   COSC 1P02, 1P03 and 1P50
+%   MATH 1P12, 1P66, 1P67 and 1P98
+% Spring/Summer Sessions:
+%   COSC 2P03
+% Year 2
+%   COSC 2P12, 2P13, 2P32, 2P90 and 3F00
+%   one-half COSC credit
+%   one COSC credit numbered 2(alpha)90 or above
+%
+
+
+cosc as second degree program honours :-
+
+cosc as second degree program bsc with major :-
+
+cosc as second degree program pass :-
+  course(COSC_1P02),
+  course(COSC_1P03),
+  course(COSC_1P50),
+  course(MATH_1P12),
+  course(MATH_1P66),
+  course(MATH_1P67),
+  course(MATH_1P98),
+  course(COSC_2P03),
+  course(COSC_2P12),
+  course(COSC_2P13),
+  course(COSC_2P32),
+  course(COSC_2P90),
+  course(COSC_3F00),
+  course(one-half COSC credit),
+  course(one COSC credit 2x90 or above).
+
