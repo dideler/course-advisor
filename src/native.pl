@@ -1,11 +1,20 @@
-% Native - a simple shell for use with Prolog
-% knowledge bases.  It includes expanations.
-
-% Modified to work with Sicstus Prolog 4.0.
-% (B. Ross, Jan 2008)
+% Native - a simple shell for use with Prolog knowledge bases.
 %
-% Modified for assignment 2 of COSC 4P79
-% (D. Ideler, Feb 2012)
+% Initial release.
+% @author unknown
+%
+% Modified to work with Sicstus Prolog 4.0. (Jan 2008)
+% @author bross@brocku.ca (Brian Ross)
+%
+% Modified for COSC 4P79 assignment 2. (Feb 2012)
+% @author ideler.dennis@gmail.com (Dennis Ideler)
+%
+% Modified for COSC 4P79 assignment 3. (Mar 2012)
+% @author ideler.dennis@gmail.com (Dennis Ideler)
+%
+% Modified for COSC 4P79 project. (May 2012)
+% @author ideler.dennis@gmail.com (Dennis Ideler)
+% @author kelly.moylan@gmail.com (Kelly Moylan)
 
 :- consult(op). % Load op.pl for user-defined operators.
 :-op(900,xfy, :).
@@ -15,15 +24,18 @@
 ?- unknown(_, fail).
 
 main :-
-	greeting,
-	repeat,
-	write('> '),
-	read(X),
-	do(X),
-  (X == quit; X == halt; X == exit). % More user-friendly halting.
+  asserta(known(kb,no)),
+  greeting,
+  repeat,
+  write('> '),
+  read(X),
+  do(X),
+  (X == quit; X == halt; X == exit), !. % User-friendly termination.
 
 greeting :-
-	write('This is the native Prolog shell.'), nl,
+  write('Unofficial Brock University Computer Science Course Advisor.'),nl,
+  write('This follows the 2012-2013 undegraduate calendar.'),nl,
+  write('Built on top of the native Prolog shell.'),nl,nl,
 	native_help.
 
 do(help) :- native_help, !.
@@ -42,37 +54,52 @@ do(X) :-
 	fail.
 
 native_help :-
-	write('Type help. load. solve. trace. dump. how(Goal). whynot(Goal). or quit.'),nl,
-	write('at the prompt. You can type why. during solve if curious.'), nl.
+  write('Commands:'),nl,
+  write('    help. Shows this command menu.'),nl,
+  write('    load. Loads a given knowledge base.'),nl,
+  write('    solve. Starts the inference.'),nl,
+  write('    trace. Toggles tracing the execution of the inference tree.'),nl,
+  write('    dump. Dumps the given rules in the knowledge base.'),nl,
+  write('    how. Explains why the most recent answer was chosen.'),nl,
+  write('    whynot(Goal). Explains why Goal was not chosen.'),nl,
+  write('    why. Explains why the current question is being asked.'),nl,
+  write('    quit. Terminates the program. \'halt.\' and \'exit.\' also work.'),nl.
 
 load_kb :-
 	write('Enter file name in single quotes (ex. ''birds.nkb''.): '),
 	read(F),
-	my_consult(F).
+	my_consult(F),
+  retract(known(kb,no)),
+  asserta(known(kb,yes)).
 
 solve :-
+  known(kb,yes), % Only continue if a KB has been loaded.
 	abolish(known/3),
-	prove(top_goal(X),[],0), % TODO: consider renaming top_goal to checking_for or possible_answer.
+	prove(top_goal(X),[],0), % TODO: consider renaming top_goal to something more descriptive.
 	write('The answer is '),write(X),nl.
+solve :-
+  known(kb,no),
+  write('You must load a knowledge base before you can solve.'), nl,
+  !.
 solve :-
 	write('No answer found.'),nl.
 
 trace_rules :-
-    known(trace,on), % if flag is set
-    retract(known(trace,on)), % remove set flag
-    asserta(known(trace,off)), % add unset flag
-    writeln('Trace off.'),
-    !. % and dont look any further
+  known(trace,on), % if flag is set
+  retract(known(trace,on)), % remove set flag
+  asserta(known(trace,off)), % add unset flag
+  writeln('Trace off.'),
+  !. % and dont look any further
 trace_rules :-
-    known(trace,off), % else if flag is unset
-    retract(known(trace,off)), % remove unset flag
-    asserta(known(trace,on)), % add set flag
-    writeln('Trace on.'),
-    !.%, fail.
+  known(trace,off), % else if flag is unset
+  retract(known(trace,off)), % remove unset flag
+  asserta(known(trace,on)), % add set flag
+  writeln('Trace on.'),
+  !.
 trace_rules :- % if we get here, it is the first time trace is called.
-	asserta(known(trace,on)),
-    writeln('Trace on.'),
-    !.%, fail.
+  asserta(known(trace,on)),
+  writeln('Trace on.'),
+  !.
 
 % Reads in the name of a rule (w/o args) then prints out all the rules for it.
 dump :-
