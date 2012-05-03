@@ -1,5 +1,5 @@
 :- consult(op).
-
+/*
 top_goal(X) :- bird iz X.
 
 order iz tubenose:-
@@ -151,16 +151,16 @@ bird iz purple_martin:-
     family iz swallow,
     color iz dark.
 
-country iz united_states :- region(new_england).
-country iz united_states :- region(south_east).
-country iz united_states :- region(mid_west).
-country iz united_states :- region(south_west).
-country iz united_states :- region(north_west).
-country iz united_states :- region(mid_atlantic).
+country iz united_states :- region iz new_england.
+country iz united_states :- region iz south_east.
+country iz united_states :- region iz mid_west.
+country iz united_states :- region iz south_west.
+country iz united_states :- region iz north_west.
+country iz united_states :- region iz mid_atlantic.
 
-country iz canada :- province(ontario).
-country iz canada :- province(quebec).
-country iz canada :- province(etc).
+country iz canada :- province iz ontario.
+country iz canada :- province iz quebec.
+country iz canada :- province iz etc.
 
 region iz new_england :-
     state iz X,
@@ -198,96 +198,110 @@ province iz X :- menuask(province,X,[ontario,quebec,etc]).
 multivalued(voice).
 %multivalued(color).
 multivalued(eats).
-
+*/
 %------------------------------------
 
 course(COSC_1P02) :- % Introduction to Computer Science
 course(COSC_1P03) :- % Data Structures and Abstraction
-  prerequisite(course(COSC_1P02).
+  prerequisite(course(COSC_1P02)).
 course(COSC_1P50) :- % Integrity and Literacy in the Information Age
 course(MATH_1P66) :- % Mathematical Reasoning
 course(MATH_1P67) :- % Mathematics for Computer Science
-  prerequisite(course(MATH_1P66).
+  prerequisite(course(MATH_1P66)).
 course(COSC_2P03) :- % Advanced Data Structures
-  prerequisite(course(COSC_1P03).
+  prerequisite(course(COSC_1P03)).
 course(COSC_2P12) :- % Computer Organization and Assembly Language
-  prerequisite(course(COSC_1P03).
+  prerequisite(course(COSC_1P03)).
 course(COSC_2P13) :- % Introduction to Operating Systems
-  prerequisite(course(COSC_2P12).
+  prerequisite(course(COSC_2P12)).
 course(COSC_2P32) :- % File and Database Systems
-  prerequisite(course(COSC_2P03).
+  prerequisite(course(COSC_2P03)).
 course(COSC_2P89) :- % Internet Technologies
-  prerequisite(course(COSC_1P03).
+  prerequisite(course(COSC_1P03)).
 course(COSC_2P90) :- % Programming Languages and Object-Orientation
-  prerequisite(course(COSC_1P03).
+  prerequisite(course(COSC_1P03)).
 course(COSC_2P91) :- % Procedural Programming
-  prerequisite(course(COSC_1P03).
+  prerequisite(course(COSC_1P03)).
 course(COSC_2P93) :- % Logic Programming
-  prerequisite(course(COSC_2P03).
+  prerequisite(course(COSC_2P03)).
 course(COSC_2P96) :- % Introduction to 3D Modelling and Animation (???)
 course(COSC_3F00) :- % Software Engineering
-  prerequisite(course(COSC_2P03).
+  prerequisite(course(COSC_2P03)),
+  prerequisite(one and one-half COSC credits).
 course(COSC_3P01) :- % Introduction to Computer Networking
-  prerequisite(course(COSC_2P03),
-  prerequisite(course(COSC_2P13),
-  prerequisite(course(MATH_1P67).
+  prerequisite(course(COSC_2P03)),
+  prerequisite(course(COSC_2P13)),
+  prerequisite(course(MATH_1P67)).
 course(COSC_3P03) :- % Algorithms
-  prerequisite(course(COSC_2P03).
+  prerequisite(course(COSC_2P03)).
 course(COSC_3P40) :- % Advanced Object-Oriented Programming
+  prequisite(two COSC credits).
 course(COSC_3P71) :- % Artificial Intelligence
-  prerequisite(course(COSC_2P03).
+  prerequisite(course(COSC_2P03)).
 course(COSC_3P92) :- % Computer Architecture
-  prerequisite(course(COSC_2P13).
+  prerequisite(course(COSC_2P13)).
 course(COSC_3P93) :- % Parallel Computing
-  prerequisite(course(COSC_2P13).
+  prerequisite(course(COSC_2P13)).
 course(COSC_3P94) :- % Introduction to Human Computer Interaction
+  prerequisite(two COSC credits).
 course(COSC_3P95) :- % Embedded Software
-  prerequisite(course(COSC_2P13).
+  prerequisite(course(COSC_2P13)).
 course(COSC_3P96) :- % Discrete Event Simulation
 course(COSC_3P98) :- % Computer Graphics
-  prerequisite(course(COSC_2P03).
+  prerequisite(course(COSC_2P03)),
+  prerequisite(course(MATH_1P12)),
+  prerequisite(three COSC credits).
 course(COSC_3P99) :- % Computing Project
-  prerequisite(course(COSC_2P03).
+  prerequisite(course(COSC_2P03)).
 course(COSC_3V97) :- % Mobile Computing
-  prerequisite(course(COSC_2P13),
-  prerequisite(course(COSC_2P32).
+  prerequisite(course(COSC_2P13)),
+  prerequisite(course(COSC_2P32)).
 course(COSC_4F90) :- % Computing Project
-  prerequisite(course(COSC_3F00).
+  prerequisite(course(COSC_3F00)).
 course(COSC_4P03) :- % Advanced Algorithms
-  prerequisite(course(COSC_3P03).
+  prerequisite(course(COSC_3P03)).
 course(COSC_4P13) :- % Operating Systems: Design and Implementation
-  prerequisite(course(COSC_2P13),
-  prerequisite(course(COSC_2P91).
+  prerequisite(course(COSC_2P13)),
+  prerequisite(course(COSC_2P91)).
 course(COSC_4P14) :- % Computer Networks
-  prerequisite(course(COSC_3P01).
+  prerequisite(course(COSC_3P01)).
 course(COSC_4P41) :- % Functional Programming
+  prerequisite(three and one-half COSC credits).
 course(COSC_4P42) :- % Formal Methods in Software Engineering
-  prerequisite(course(MATH_1P67).
+  prerequisite(course(MATH_1P67)),
+  prerequisite(three and one-half COSC credits).
 course(COSC_4P61) :- % Theory of Computation
-  prerequisite(course(MATH_1P67).
+  prerequisite(course(MATH_1P67)).
 course(COSC_4P75) :- % Compiler Construction
-  prerequisite(course(COSC_2P03),
-  prerequisite(course(COSC_2P12),
-  prerequisite(course(COSC_2P90).
+  prerequisite(course(COSC_2P03)),
+  prerequisite(course(COSC_2P12)),
+  prerequisite(course(COSC_2P90)).
 course(COSC_4P76) :- % Machine Learning
-  prerequisite(course(COSC_3P71).
+  prerequisite(course(COSC_3P71)).
 course(COSC_4P78) :- % Robotics
-  prerequisite(course(COSC_3P71).
+  prerequisite(course(COSC_3P71)).
 course(COSC_4P79) :- % Expert Systems
-  prerequisite(course(COSC_2P93),
-  prerequisite(course(COSC_3P71).
+  prerequisite(course(COSC_2P93)),
+  prerequisite(course(COSC_3P71)).
 course(COSC_4P80) :- % Artificial Neural Networks
-  prerequisite(course(COSC_3P71).
+  prerequisite(course(COSC_3P71)).
 course(COSC_4P87) :- % Foundations of Reasoning under Uncertainty
-  prerequisite(course(COSC_3P71).
+  prerequisite(course(COSC_3P71)).
 course(COSC_4P98) :- % Topics in Computer Media and Digital Audio
+  prerequisite(three and one-half COSC credits).
 course(COSC_0N01) :- % Co-op Work Placement I
 course(COSC_0N02) :- % Co-op Work Placement II
 course(COSC_0N03) :- % Co-op Work Placement III
 course(COSC_2C01) :- % Co-op Reflective Learning and Integration I
+  prerequisite(course(SCIE_0N90)),
+  corequisite(course(COSC_0N01)).
 course(COSC_2C02) :- % Co-op Reflective Learning and Integration II
+  prerequisite(course(SCIE_0N90)),
+  corequisite(course(COSC_0N02)).
 course(COSC_2C03) :- % Co-op Reflective Learning and Integration III
-  prerequisite()
+  prerequisite(course(SCIE_0N90)),
+  corequisite(course(COSC_0N03)).
+course(SCIE_0N90). % Co-op Training and Development
 
 
 % Computer Science as a second degree program.
@@ -335,3 +349,13 @@ cosc as second degree program pass :-
   course(one-half COSC credit),
   course(one COSC credit 2x90 or above).
 
+degree(pass) :-
+  course(COSC_1P03),
+  course(COSC_1P67).
+
+course(X) :- ask(course,X).
+prerequisite(X) :- ask(prerequisite,X).
+concentration(X) :- menuask(concentration,X,[intelligent_systems,software_engineering,none]).
+gradschool(X) :- menuask(gradschool,X,[yes,no]). % TODO: consider making it an 'ask'
+
+multivalued(course). % Multivalued because a rule can have many courses.
