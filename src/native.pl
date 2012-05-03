@@ -103,7 +103,7 @@ trace_rules :- % if we get here, it is the first time trace is called.
   writeln('Trace on.'),
   !.
 
-% Reads in the name of a rule (w/o args) then prints out all the rules for it.
+% Reads in the name of a rule (w//o args) then prints out all the rules for it.
 dump :-
   known(kb,yes),
   write('Enter rule name without arguments (ex. order.): '),
@@ -191,18 +191,22 @@ pic_menu(Ctr,N, Val, [_|Rest]) :-
   NextCtr is Ctr + 1,                % try the next one
   pic_menu(NextCtr, N, Val, Rest).
 
-get_user(X,Hist) :- % Y
+get_user(Y,Hist) :- % 
   repeat,
   write('> '),
   read(X),
-  process_ans(X,Hist), !.
+  process_ans(X,Hist,Y), !.
 
 % Case for handling 'why' during ask prompt.
 % FIXME: 'why' messes up user input on backtracking!
 % TODO: Try to find a case where it screws up.
-process_ans(why,Hist) :-
-  write_rule(4,Hist), !, fail.
-process_ans(X,_).
+process_ans(why,Hist,Y) :-
+	write_list(4,Hist,Rest),
+	get_user(Y,Rest).
+process_ans(why, [], Y) :-
+	write_list(4,[],Rest),
+	get_user(Y,Rest).
+process_ans(X,_,X).
 
 % Prolog in Prolog for explanations.
 % It is a bit confusing because of the ambiguous use of the comma, both
@@ -279,10 +283,19 @@ write_rule(N,[H|T]) :-
   read(X),
   process_ans(X,T).
 
-write_list(N,[]).
-write_list(N,[H|T]) :-
-  tab(N),write(H),nl,
-  write_list(N,T).
+write_list(N,[],[]) :-
+	tab(N),
+	write('Just answer the question.'),
+	nl.
+write_list(N,[H],[H]) :- 
+	tab(N),
+	write('Just answer the question.'),
+	nl.
+write_list(N,[H|T], T) :-
+	tab(N),
+	write('Because '),
+	write(H),
+	nl.
 
 write_body(N,(First,Rest)) :-
   tab(N),write(First),nl,
