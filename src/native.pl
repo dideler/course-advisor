@@ -30,7 +30,9 @@ main :-
   write('> '),
   read(X),
   do(X),
-  (X == quit; X == halt; X == exit), !. % User-friendly termination.
+  (X == quit; X == halt; X == exit), % User-friendly termination.
+  abolish(known/3), abolish(known/2), abolish(known/1), % Clear any knowns.
+  !.
 
 greeting :-
   write('Unofficial Brock University Computer Science Course Advisor.'),nl,
@@ -127,7 +129,6 @@ dump_rule(Body) :-
   write(Body).
 
 % "ask" asks the user for a yes or no answer to the question.
-% TODO: find out why multivalued does and is being used here.
 
 ask(Attribute,Value,_) :-
   known(yes,Attribute,Value),     % Succeed if it's known.
@@ -137,13 +138,14 @@ ask(Attribute,Value,_) :-
   known(_,Attribute,Value),       % Otherwise fail.
   !, fail.
 
-ask(Attribute,_,_) :-
+ask(Attribute,_,_) :-             % Also fail if it's some wrong value.
   \+ multivalued(Attribute),
-  known(yes,Attribute,_),         % fail if its some other value.
-  !, fail.                        % the cut in clause #1 ensures
-  				                        % this is the wrong value
-ask(A,V,Hist) :-
-  write(A :V),                    % If we get here, we need to ask.
+  known(yes,Attribute,_), 
+  !, fail.
+
+ask(A,V,Hist) :-                  % If we get here, we need to ask.
+  write('Do you have the credit for '),
+  write(A :V),                    
   write('? (yes or no) '),
   get_user(Y,Hist),nl,            % get the answer
   asserta(known(Y,A,V)),          % remember it so we dont ask again.
