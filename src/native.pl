@@ -23,6 +23,8 @@
 
 ?- unknown(_, fail).
 
+:- nl,write('Type "main." to get started.'),nl,nl.
+
 main :-
   asserta(known(kb,no)),
   greeting,
