@@ -79,7 +79,7 @@ load_kb :-
 solve :-
   known(kb,yes), % Only continue if a KB has been loaded.
   abolish(known/3),
-  prove(top_goal(X),[],0), % TODO: consider renaming top_goal to something more descriptive.
+  prove(top_goal(X),[],0),
   write('The answer is '),write(X),nl,
   % TODO: use the answer to match a predicate that contains the explanation
   % but only print courses from the answer that haven't been taken yet
@@ -134,6 +134,11 @@ dump_rule(Body) :-
 
 % "ask" asks the user for a yes or no answer to the question.
 
+ask_list(_,[],_). % TODO: Test
+ask_list(A,[V|Rest],H) :-
+  ask(A,V,H),
+  ask_list(A,Rest,H).
+
 ask(Attribute,Value,_) :-
   known(yes,Attribute,Value),     % Succeed if it's known (i.e. yes).
   !. 
@@ -146,8 +151,8 @@ ask(Attribute,Value,_) :-
   known(_,Attribute,Value),       % But fail for everything else in that case.
   !, fail.
 
-ask(Attribute,_,_) :-             % Also fail if it's some wrong value.
-  \+ multivalued(Attribute),
+ask(Attribute,_,_) :-             % Also fail if a non-multivalued attribute has
+  \+ multivalued(Attribute),      % multivalues (i.e. wrong value).
   known(yes,Attribute,_), 
   !, fail.
 
@@ -174,7 +179,7 @@ menuask(Attribute,_,_,_) :-
 menuask(Attribute,AskValue,Menu,Hist) :-
   write('What is the value for '),write(Attribute),write('?'),nl,
   display_menu(Menu),
-  write('Enter the number of choice> '),
+  write('Enter the number of choice '),
   get_user(Num,Hist),nl,
   pick_menu(Num,AnswerValue,Menu),
   asserta(known(yes,Attribute,AnswerValue)),
@@ -228,8 +233,8 @@ process_ans(X,_,X).
 prove(true,_,_) :- !. % Base case, goal proven.
 prove(menuask(X,Y,Z),Hist,_) :-
   menuask(X,Y,Z,[menuask(X,Y,Z)|Hist]), !. % Call directly & save in history.
-prove(ask(X,Y),Hist,_) :-
-  ask(X,Y,[ask(X,Y)|Hist]), !. % Ask and save in history.
+prove(ask_list(X,Y),Hist,_) :- % TODO: was 'ask' before -- remove comment if works
+  ask_list(X,Y,[ask_list(X,Y)|Hist]), !. % Ask and save in history.
 prove((Goal,Rest),Hist,N) :- % Multiple goals.
   prove(Goal,Hist,N), % Solve current goal.
   prove(Rest,Hist,N). % Solve the next goal. +1
