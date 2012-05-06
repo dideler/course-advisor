@@ -81,6 +81,8 @@ solve :-
   abolish(known/3),
   prove(top_goal(X),[],0), % TODO: consider renaming top_goal to something more descriptive.
   write('The answer is '),write(X),nl,
+  % TODO: use the answer to match a predicate that contains the explanation
+  % but only print courses from the answer that haven't been taken yet
   abolish(known/1), % Get rid of any previous answers.
   asserta(known(X)).
 solve :-
@@ -133,11 +135,15 @@ dump_rule(Body) :-
 % "ask" asks the user for a yes or no answer to the question.
 
 ask(Attribute,Value,_) :-
-  known(yes,Attribute,Value),     % Succeed if it's known.
+  known(yes,Attribute,Value),     % Succeed if it's known (i.e. yes).
   !. 
 
 ask(Attribute,Value,_) :-
-  known(_,Attribute,Value),       % Otherwise fail.
+  known(_,course,Value),          % Succeed if a course is not "yes" (i.e. no).
+  !.
+
+ask(Attribute,Value,_) :-
+  known(_,Attribute,Value),       % But fail for everything else in that case.
   !, fail.
 
 ask(Attribute,_,_) :-             % Also fail if it's some wrong value.
@@ -149,9 +155,9 @@ ask(A,V,Hist) :-                  % If we get here, we need to ask.
   write('Do you have the credit for '),
   write(A :V),                    
   write('? (yes or no) '),
-  get_user(Y,Hist),nl,            % get the answer
-  asserta(known(Y,A,V)),          % remember it so we dont ask again.
-  Y = yes.                        % succeed or fail based on answer.
+  get_user(Y,Hist),nl,
+  asserta(known(Y,A,V)).          % Remember it so we don't ask again.
+  %Y = yes.                       % Succeed or fail based on answer.
 
 % "menuask" is like ask, only it gives the user a menu to to choose
 % from rather than a yes or no answer. In this case there is no
@@ -195,7 +201,7 @@ pic_menu(Ctr,N, Val, [_|Rest]) :-
   NextCtr is Ctr + 1,                % try the next one
   pic_menu(NextCtr, N, Val, Rest).
 
-get_user(Y,Hist) :- % 
+get_user(Y,Hist) :-
   repeat,
   write('> '),
   read(X),
@@ -276,17 +282,6 @@ check(H) :- prove(H,[],_), write_line([H,succeeds]), !.
 check(H) :- write_line([H,fails]), fail.
 
 % Writes a single rule of history every time user asks 'why'.
-write_rule(N,[]) :-
-  tab(N),writeln('because that was the original problem!'),
-  %get_user(X,[],Y). % In case the user asks why again, repeat answer.
-  read(X),
-  process_ans(X,[]). 
-write_rule(N,[H|T]) :-
-  tab(N),write('because '),writeln(H),
-  %get_user(X,T,Y).
-  read(X),
-  process_ans(X,T).
-
 write_list(N,[],[]) :-
 	tab(N),
 	write('Just answer the question.'),
