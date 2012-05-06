@@ -81,8 +81,11 @@ solve :-
   abolish(known/3),
   prove(top_goal(X),[],0),
   write('The answer is '),write(X),nl,
-  % TODO: use the answer to match a predicate that contains the explanation
-  % but only print courses from the answer that haven't been taken yet
+  % TODO: Use the answer to match a predicate that contains a list of courses,
+  % then only print courses from the list that haven't been taken yet
+  % (i.e. are asserted with 'no', or to be precise, not with 'yes').
+  % User friendly tip: display the course names in addition to course codes.
+  courses(X,Courses),write(Courses),nl, % just for testing purposes
   abolish(known/1), % Get rid of any previous answers.
   asserta(known(X)).
 solve :-
@@ -232,7 +235,7 @@ prove(true,_,_) :- !. % Base case, goal proven.
 prove(menuask(X,Y,Z),Hist,_) :-
   menuask(X,Y,Z,[menuask(X,Y,Z)|Hist]), !. % Call directly & save in history.
 prove(ask_list(X,Y),Hist,_) :-
-  ask_list(X,Y,[ask_list(X,Y)|Hist]), !. % Ask and save in history.
+  ask_list(X,Y,[ask_list(X,Y)|Hist]), !. % Call directly & save in history.
 prove((Goal,Rest),Hist,N) :- % Multiple goals.
   prove(Goal,Hist,N), % Solve current goal.
   prove(Rest,Hist,N). % Solve the next goal. +1
