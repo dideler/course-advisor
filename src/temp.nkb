@@ -1,0 +1,230 @@
+% Knowledge base for the native shell.
+% Contains rules (in pure Prolog) for Computer Science courses at Brock.
+%
+% @author ideler.dennis@gmail.com (Dennis Ideler)
+
+% TODO: make sure there's no errors in the course logic
+% TODO: better naming (e.g. c([...]) is not descriptive)
+
+% course(Code, Name) :-
+%   dependencies([prereqs, etc]).
+%
+% (!) Each course must contain itself as a dependency,
+%     otherwise the course is solved based solely on its prereqs.
+%     We need to know if the user has the credit for the current course by asking.
+
+course(cosc_1P02, 'Introduction to Computer Science') :-
+  c([cosc_1P02]).
+course(cosc_1P03, 'Data Structures and Abstraction') :-
+  c([cosc_1P02, cosc_1P03]).
+course(cosc_1P50, 'Integrity and Literacy in the Information Age') :-
+  c([cosc_1P50]).
+course(math_1P66, 'Mathematical Reasoning') :-
+  c([math_1P66]).
+course(math_1P67, 'Mathematics for Computer Science') :-
+  c([math_1P66, math_1P67]).
+course(cosc_2P03, 'Advanced Data Structures') :-
+  c([cosc_1P03, cosc_2P03]).
+course(cosc_2P12, 'Computer Organization and Assembly Language') :-
+  c([cosc_1P03, cosc_2P12]).
+course(cosc_2P13, 'Introduction to Operating Systems') :-
+  c([cosc_2P12, cosc_2P13]).
+course(cosc_2P32, 'File and Database Systems') :-
+  c([cosc_2P03, cosc_2P32]).
+course(cosc_2P89, 'Internet Technologies') :-
+  c([cosc_1P03, cosc_2P89]).
+course(cosc_2P90, 'Programming Languages and Object-Orientation') :-
+  c([cosc_1P03, cosc_2P90]).
+course(cosc_2P91, 'Procedural Programming') :-
+  c([cosc_1P03, cosc_2P91]).
+course(cosc_2P93, 'Logic Programming') :-
+  c([cosc_2P03, cosc_2P93]).
+course(cosc_2P96, 'Introduction to 3D Modelling and Animation') :- % TODO: probably remove, not really part of COSC undergrad.
+  c([cosc_2P96]).
+course(cosc_3F00, 'Software Engineering') :-
+  c([cosc_2P03, cosc_3F00]).
+%  c([one_and_one-half_cosc_credits]). % TODO: use a different name than what's used for specific courses
+                                      % TODO: have shell determine first if requirement met by counting, if not, then ask
+course(cosc_3P01, 'Introduction to Computer Networking') :-
+  c([cosc_2P03, cosc_2P13, math_1P67, cosc_3P01]).
+course(cosc_3P03, 'Algorithms') :-
+  c([cosc_2P03, cosc_3P03]).
+course(cosc_3P40, 'Advanced Object-Oriented Programming') :-
+%  c([two_cosc_credits]). % TODO
+  c([cosc_3P40]).
+course(cosc_3P71, 'Artificial Intelligence') :-
+  c([cosc_2P03, cosc_3P71]).
+course(cosc_3P92, 'Computer Architecture') :-
+  c([cosc_2P13, cosc_3P92]).
+course(cosc_3P93, 'Parallel Computing') :-
+  c([cosc_2P13, cosc_3P93]).
+course(cosc_3P94, 'Introduction to Human Computer Interaction') :-
+%  c(two_cosc_credits). % TODO
+  c([cosc_3P94]).
+course(cosc_3P95, 'Embedded Software') :-
+  c([cosc_2P13, cosc_3P95]).
+course(cosc_3P96, 'Discrete Event Simulation') :-
+  c([cosc_3P96]).
+course(cosc_3P98, 'Computer Graphics') :-
+%  c([three_cosc_credits]). % TODO
+  c([cosc_2P03, math_1P12, cosc_3P98]).
+course(cosc_3P99, 'Computing Project') :-
+  c([cosc_2P03, cosc_3P99]).
+course(cosc_3V97, 'Mobile Computing') :-
+  c([cosc_2P13, cosc_2P32, cosc_3V97]).
+course(cosc_4F90, 'Computing Project') :-
+  c([cosc_3F00, cosc_4F90]).
+course(cosc_4P03, 'Advanced Algorithms') :-
+  c([cosc_3P03, cosc_4P03]).
+course(cosc_4P13, 'Operating Systems: Design and Implementation') :-
+  c([cosc_2P13, cosc_2P91, cosc_4P13]).
+course(cosc_4P14, 'Computer Networks') :-
+  c([cosc_3P01, cosc_4P14]).
+course(cosc_4P41, 'Functional Programming') :-
+%  c(three_and_one-half_cosc_credits). % TODO
+  c([cosc_4P41]).
+course(cosc_4P42, 'Formal Methods in Software Engineering') :-
+%  c(three_and_one-half_cosc_credits). % TODO
+  c([math_1P67, cosc_4P42]).
+course(cosc_4P61, 'Theory of Computation') :-
+  c([math_1P67, cosc_4P61]).
+course(cosc_4P75, 'Compiler Construction') :-
+  c([cosc_2P03, cosc_2P12, cosc_2P90, cosc_4P75]).
+course(cosc_4P76, 'Machine Learning') :-
+  c([cosc_3P71, cosc_4P76]).
+course(cosc_4P78, 'Robotics') :-
+  c([cosc_3P71, cosc_4P78]).
+course(cosc_4P79, 'Expert Systems') :-
+  c([cosc_2P93, cosc_3P71, cosc_4P79]).
+course(cosc_4P80, 'Artificial Neural Networks') :-
+  c([cosc_3P71, cosc_4P80]).
+course(cosc_4P87, 'Foundations of Reasoning under Uncertainty') :-
+  c([cosc_3P71, cosc_4P87]).
+course(cosc_4P98, 'Topics in Computer Media and Digital Audio') :-
+  c([cosc_4P98]).
+%  c(three_and_one-half_cosc_credits). % TODO
+course(cosc_0N01, 'Co-op Work Placement I') :-
+  c([cosc_0N01]).
+course(cosc_0N02, 'Co-op Work Placement II') :-
+  c([cosc_0N02]).
+course(cosc_0N03, 'Co-op Work Placement III') :-
+  c([cosc_0N03]).
+course(cosc_2C01, 'Co-op Reflective Learning and Integration I') :-
+  c([scie_0N90, cosc_2C01]).
+%  corequisite(course(cosc_0N01)). % TODO: easiest to just include in c([...])
+                                   %       but then user won't know it's a coreq,
+                                   %       so make a new predicate for it?
+course(cosc_2C02, 'Co-op Reflective Learning and Integration II') :-
+  c([scie_0N90, cosc_2C02]).
+%  corequisite(course(cosc_0N02)). % TODO
+course(cosc_2C03, 'Co-op Reflective Learning and Integration III') :-
+  c([scie_0N90, cosc_2C03]).
+%  corequisite(course(cosc_0N03)). % TODO
+course(scie_0N90, 'Co-op Training and Development') :-
+  c([scie_0N90]).
+
+
+top_goal(X) :- option(X).
+
+% TODO: need more lists, one for each option (and possibly more for abstraction)
+%       if an answer is chosen that doesn't have an accompanying list, inference fails;
+%       so it's important that we have lists for all possible answers
+%
+% For example:
+% courses(intelligent_systems, [cosc_3p71, cosc_4p80, ...]).
+% courses(software_engineering, [cosc_2p90, cosc_3f00, ...]).
+% Can put courses in single quotes, but not necessary.
+
+% (!) The part below here is messy due to testing, should be cleaned up.
+%     The final version may look very different.
+
+courses(1,[cosc_1P02, cosc_1P03, cosc_2P03, cosc_1P50]). % TEST
+courses(4,[cosc_1P02, cosc_1P03, cosc_1P50]).            % TEST
+
+% One additional cosc credit, one of the first line, one of the second line.
+% TODO: consider splitting up the two groups. easier to check if requirements for each group met.
+courses('Graduate School Entry Requirements',[cosc_4P42, math_2P75, math_3P12, math_3P60, math_3P73,
+                                              math_2P12, math_2P71, math_2P72, math_2P81]).
+
+core(first) :- % TEST
+  c([cosc_1p02, cosc_1p03]), % 1P02 is a prereq for 1P03. 
+  c([cosc_1p03, cosc_2p03]), % Is there a better way to do this?
+  c([cosc_1p50]).
+
+option(1) :-
+  degree(pass),
+  core(first).
+
+option(2) :-
+  degree(honours), % honours requires a minor or grad school requirements
+  honours_requirement('grad school entry'),
+  core(first).
+
+option(3) :-
+  degree(honours),
+  honours_requirement(minor),
+  core(first).
+
+option(4) :-
+  degree(co-op),
+  course(cosc_1P02,_),
+  course(cosc_1P03,_),
+  course(cosc_1P50,_).
+
+% TODO: make different asks for different types of questions.
+
+c(X) :- ask_list(course,X). % NOTE: 'course' is the attribute being asserted, not 'c'.
+degree(X) :- menuask(degree,X,[pass,honours,co-op]).
+concentration(X) :- menuask(concentration,X,[intelligent_systems,software_engineering,none]).
+honours_requirement(X) :- menuask(honours_requirement,X,['grad school entry',minor]).
+
+multivalued(course). % Multivalued because a rule can have many courses.
+multivalued(c). % TODO: remove, not being used -- verify before removing
+
+% Example of a possible recommendation (taken from course calendar)
+% -----------------------------------------------------------------
+%
+% Computer Science as a second degree program.
+% - Holding an honours or Pass degree in another discipline
+% - The additional courses taken for a second degree in Computer Science must
+%   include a minimum of five (for a subsequent 20 credit degree) or four
+%   (for a second Pass degree) Brock cosc credits. All elective credits should
+%   be numbered 2(alpha)00 or above.
+%
+% Honours (TODO)
+%
+% BSc with Major (TODO)
+%
+% Pass
+% Year 1
+%   cosc 1P02, 1P03 and 1P50
+%   math 1P12, 1P66, 1P67 and 1P98
+% Spring/Summer Sessions:
+%   cosc 2P03
+% Year 2
+%   cosc 2P12, 2P13, 2P32, 2P90 and 3F00
+%   one-half cosc credit
+%   one cosc credit numbered 2(alpha)90 or above
+%
+%
+%
+%cosc as second degree program honours :-
+%
+%cosc as second degree program bsc with major :-
+%
+%cosc as second degree program pass :-
+%  course(cosc_1P02),
+%  course(cosc_1P03),
+%  course(cosc_1P50),
+%  course(math_1P12),
+%  course(math_1P66),
+%  course(math_1P67),
+%  course(math_1P98),
+%  course(cosc_2P03),
+%  course(cosc_2P12),
+%  course(cosc_2P13),
+%  course(cosc_2P32),
+%  course(cosc_2P90),
+%  course(cosc_3F00),
+%  course(one-half cosc credit),
+%  course(one cosc credit 2x90 or above).
