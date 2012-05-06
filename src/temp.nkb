@@ -147,9 +147,9 @@ courses('Graduate School Entry Requirements',[cosc_4P42, math_2P75, math_3P12, m
                                               math_2P12, math_2P71, math_2P72, math_2P81]).
 
 core(first) :- % TEST
-  c([cosc_1p02, cosc_1p03]), % 1P02 is a prereq for 1P03. 
-  c([cosc_1p03, cosc_2p03]), % Is there a better way to do this?
-  c([cosc_1p50]).
+  c([cosc_1P02, cosc_1P03]), % 1P02 is a prereq for 1P03. 
+  c([cosc_1P03, cosc_2P03]), % Is there a better way to do this?
+  c([cosc_1P50]).
 
 option(1) :-
   degree(pass),
