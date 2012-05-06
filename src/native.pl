@@ -70,7 +70,7 @@ native_help :-
   write('    quit. Terminates the program. ''halt.'' and ''exit.'' also work.'),nl.
 
 load_kb :-
-  write('Enter file name in single quotes (ex. ''birds.nkb''.): '),
+  write('Enter file name in single quotes (ex. ''cosc2012-2013.nkb''.): '),
   read(F),
   my_consult(F),
   retract(known(kb,no)),
@@ -80,12 +80,11 @@ solve :-
   known(kb,yes), % Only continue if a KB has been loaded.
   abolish(known/3),
   prove(top_goal(X),[],0),
-  write('The answer is '),write(X),nl,
-  % TODO: Use the answer to match a predicate that contains a list of courses,
-  % then only print courses from the list that haven't been taken yet
-  % (i.e. are asserted with 'no', or to be precise, not with 'yes').
-  % User friendly tip: display the course names in addition to course codes.
-  courses(X,Courses),write(Courses),nl, % just for testing purposes
+%write('The answer is '),write(X),nl, % the chosen option
+  courses(X,Courses), % Use the list of courses that belongs to the answer.
+%write(Courses),nl, % list of courses that belongs to that option
+  write('That''s it! Here are the courses you should consider taking:'),nl,nl,
+  write_advice(Courses),nl,
   abolish(known/1), % Get rid of any previous answers.
   asserta(known(X)).
 solve :-
@@ -286,6 +285,24 @@ explain(Goal) :-   		% new!
 
 check(H) :- prove(H,[],_), write_line([H,succeeds]), !.
 check(H) :- write_line([H,fails]), fail.
+
+% suggest_course() :- TODO: probably better to put logic from write_advice, here.
+
+% Writes the courses that are advised.
+write_advice([]).
+write_advice([Course_code|Rest]) :-
+  known(Credit,course,Course_code),
+%  write(Course_code), write(' = '), write(Credit), nl, % TODO: remove
+  ( Credit == no,
+    atom_concat('course(',Course_code,GoalTemp), % TODO: modify once KB is english-ified
+    atom_concat(GoalTemp,',Name)',GoalAtom), % Goal is now an atom, won't unify yet.
+%    write(GoalAtom),nl, % TODO: remove
+    atom_to_term(GoalAtom,Goal,_), % Converts Goal to a term, now it can unify.
+%    !,
+    clause(Goal,_), tab(2), write(Goal), nl,
+    write_advice(Rest) ;
+    write_advice(Rest)
+  ).
 
 % Writes a single rule of history every time user asks 'why'.
 write_list(N,[],[]) :-
