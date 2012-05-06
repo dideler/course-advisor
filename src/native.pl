@@ -114,8 +114,8 @@ dump :-
   known(kb,yes),
   write('Enter rule name without arguments (ex. order.): '),
   read(Rule),
-  %atom_concat(Rule,'(_)',GoalAtom), % Goal is atom, so variable won't unify.
-  atom_concat(Rule,' iz _',GoalAtom), % TODO: stick to one KB style...
+  atom_concat(Rule,'(_)',GoalAtom), % Goal is atom, so variable won't unify.
+  %atom_concat(Rule,' iz _',GoalAtom), % TODO: switch to this after KB is english-ified
   atom_to_term(GoalAtom,Goal,_), % Converts Goal to a term, variable unifies.
   !,
   clause(Goal,Body),
@@ -132,9 +132,9 @@ dump_rule((A,B)) :-
 dump_rule(Body) :-
   write(Body).
 
-% "ask" asks the user for a yes or no answer to the question.
+% "ask" asks the user a yes or no question.
 
-ask_list(_,[],_). % TODO: Test
+ask_list(_,[],_).                 % Recurvisely ask a list of questions.
 ask_list(A,[V|Rest],H) :-
   ask(A,V,H),
   ask_list(A,Rest,H).
@@ -213,8 +213,6 @@ get_user(Y,Hist) :-
   process_ans(X,Hist,Y), !.
 
 % Case for handling 'why' during ask prompt.
-% FIXME: 'why' messes up user input on backtracking!
-% TODO: Try to find a case where it screws up.
 process_ans(why,Hist,Y) :-
 	write_list(4,Hist,Rest),
 	get_user(Y,Rest).
@@ -233,7 +231,7 @@ process_ans(X,_,X).
 prove(true,_,_) :- !. % Base case, goal proven.
 prove(menuask(X,Y,Z),Hist,_) :-
   menuask(X,Y,Z,[menuask(X,Y,Z)|Hist]), !. % Call directly & save in history.
-prove(ask_list(X,Y),Hist,_) :- % TODO: was 'ask' before -- remove comment if works
+prove(ask_list(X,Y),Hist,_) :-
   ask_list(X,Y,[ask_list(X,Y)|Hist]), !. % Ask and save in history.
 prove((Goal,Rest),Hist,N) :- % Multiple goals.
   prove(Goal,Hist,N), % Solve current goal.
