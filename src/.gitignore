@@ -1,0 +1,6 @@
+# Ignore the old or test knowledge bases.
+birds*
+cosc-courses.nkb
+
+# Also ignore the old shell.
+native-original.pl

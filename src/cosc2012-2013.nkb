@@ -1,6 +1,11 @@
 % Knowledge base for the native shell.
 % Contains rules (in pure Prolog) for Computer Science courses at Brock.
 %
+% NOTE: Does not contain rules for:
+%       - Computer Science as a Second Degree Program
+%       - Combined Major Program
+%       - Minors (since they are non-cosc).
+%
 % @author ideler.dennis@gmail.com (Dennis Ideler)
 
 % TODO: make sure there's no errors in the course logic
@@ -141,24 +146,97 @@ top_goal(X) :- option(X).
 courses(1,[cosc_1P02, cosc_1P03, cosc_2P03, cosc_1P50]). % TEST
 courses(4,[cosc_1P02, cosc_1P03, cosc_1P50]).            % TEST
 
+concentration_requirements(software_engineering) :-
+  course(cosc_2P03,_),
+  course(cosc_2P13,_),
+  course(cosc_2P90,_),
+  course(cosc_2P91,_),
+  course(cosc_3F00,_),
+  course(cosc_3P01,_),
+  course(cosc_3P03,_),
+  course(cosc_4P42,_),
+  course(cosc_4P61,_).
+  % TODO: one credit from COSC 3P92, 3P94, 4F90, 4P03, 4P13, 4P14, 4P75
+  % use menuask?
+
+concentration_requirements(intelligent_systems) :-
+  course(cosc_2P03,_),
+  course(cosc_2P32,_),
+  course(cosc_2P90,_),
+  course(cosc_2P93,_),
+  course(cosc_3F00,_),
+  course(cosc_3P03,_),
+  course(cosc_3P71,_),
+  course(cosc_4P61,_).
+  % TODO: one and one-half credits from COSC 4F90, 4P76, 4P78, 4P79, 4P80, 4P87
+
+
 % One additional cosc credit, one of the first line, one of the second line.
 % TODO: consider splitting up the two groups. easier to check if requirements for each group met.
 courses('Graduate School Entry Requirements',[cosc_4P42, math_2P75, math_3P12, math_3P60, math_3P73,
                                               math_2P12, math_2P71, math_2P72, math_2P81]).
 
-core(first) :- % TEST
+core(first) :- % TODO: remove, just a test
   c([cosc_1P02, cosc_1P03]), % 1P02 is a prereq for 1P03. 
   c([cosc_1P03, cosc_2P03]), % Is there a better way to do this?
   c([cosc_1P50]).
+
+% TODO: more descriptive names than "1", "2", etc.
+% TODO: remove underscores, add quotes. e.g. software_engineering -> 'software engineering'
 
 option(1) :-
   degree(pass),
   core(first).
 
-option(2) :-
+courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
+              math_1P98, cosc_2P03, cosc_2P12, cosc_2P13, cosc_2P32, math_1P05,
+              math_1P06, cosc_2P90, cosc_3F00, cosc_2P91, cosc_2P93]).
+              % TODO: one of cosc_3P01, cosc_3P71, cosc_3P92
+              % TODO: one humanities context credit
+              % TODO: one-half elective credit
+              % TODO: one social sciences context credit
+              % TODO: one-half sciences context credit
+              % TODO: one-half elective credit
+              % TODO: one-half cosc credit
+              % TODO: two elective credits
+
+option(pass) :-
+  degree(pass),
+
+
+/*
+Pass Program
+
+Year 1
+  COSC 1P02, 1P03 and 1P50 (see program note 1)
+  MATH 1P12, 1P66, 1P67 and 1P98
+  one Humanities context credit
+  one-half elective credit (see program note 2)
+Year 2
+  COSC 2P03, 2P12, 2P13 and 2P32
+  MATH 1P05 and 1P06
+  one Social Sciences context credit
+  one-half Sciences context credit
+  one-half elective credit (see program notes 2 and 10)
+Year 3
+  COSC 2P90 and 3F00
+  COSC 2P91 or 2P93
+  one of COSC 3P01, 3P71, 3P92
+  one-half COSC credit (see program note 10)
+  two elective credits (see program notes 2 and 10)
+*/
+
+option(2) :- % honours with grad school entry
   degree(honours), % honours requires a minor or grad school requirements
   honours_requirement('grad school entry'),
   core(first).
+
+option(honours_grad_ai) :-  % honours with grad school entry and concentration in intelligent systems
+  degree(honours),
+  honours_requirement('grad school entry'),
+  concentration(intelligent_systems), % matching complete, now check courses
+  concentration_requirements(intelligent_systems). % TODO
+
 
 option(3) :-
   degree(honours),
