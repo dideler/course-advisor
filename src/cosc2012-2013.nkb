@@ -13,7 +13,9 @@
 % TODO: remove underscores, add quotes. e.g. software_engineering -> 'software engineering'
 
 % course(Code, Name) :-
-%   dependencies([prereqs, etc]).
+%   course(course_code_of_prereq), <-- To check if prereqs have prereqs.
+%   ...
+%   dependencies([prereqs, ...]).
 %
 % (!) Each course must contain itself as a dependency,
 %     otherwise the course is solved based solely on its prereqs.
@@ -28,21 +30,36 @@
 %   ...
 %   dependencies([...]).
 
+% TODO: improve visual layout by organizing courses by program (e.g. all math courses first, then cosc, etc)
+
 course(cosc_1P02, 'Introduction to Computer Science') :-
   c([cosc_1P02]).
 course(cosc_1P03, 'Data Structures and Abstraction') :-
+  course(cosc_1P02,_),
   c([cosc_1P02, cosc_1P03]).
 course(cosc_1P50, 'Integrity and Literacy in the Information Age') :-
   c([cosc_1P50]).
+course(math_1P01, 'Calculus Concepts I') :-
+  c([math_1P01]).
+  % Prerequisite(s): two grade 12 mathematics credits including MCV4U or permission of the instructor.
+course(math_1P02, 'Calculus Concepts II') :-
+  course(math_1P01,_),
+  course(math_1P05,_),
+  c([math_1P01, math_1P05, math_1P02]).
 course(math_1P66, 'Mathematical Reasoning') :-
   c([math_1P66]).
 course(math_1P67, 'Mathematics for Computer Science') :-
+  course(math_1P66,_),
   c([math_1P66, math_1P67]).
 course(math_1P12, 'Linear Algebra I') :-
   c([math_1P12]).
   % Prerequisite(s): two grade 12 mathematics credits or permission of instructor.
 course(math_2P12, 'Linear Algebra II') :-
+  course(math_1P12,_),
   c([math_1P12, math_2P12]).
+course(math_1P97, 'Calculus with Applications') :-
+  c([math_1P97]).
+  % Prerequisite(s): one grade 12 mathematics credit
 course(math_1P98, 'Practical Statistics') :-
   c([math_1P98]).
   % Prerequisite(s): one grade 12 mathematics credit or MATH 1P20.
@@ -50,42 +67,64 @@ course(math_1P05, 'Applied Calculus I') :-
   c([math_1P05]).
   % Prerequisite(s): two grade 12 mathematics credits including MCV4U or permission of the instructor.
 course(math_1P06, 'Applied Calculus II') :-
+  course(math_1P05,_),
   c([math_1P05, math_1P06]).
 course(math_2P75, 'Introductory Financial Mathematics') :-
+  course(math_1P97,_),
+  course(math_1P98,_),
   c([math_1P97, math_1P98, math_2P75]).
 course(math_3P12, 'Applied Algebra') :-
+  course(math_2P12,_),
   c([math_2P12, math_3P12]).
 course(math_3P60, 'Numerical Methods') :-
+  course(math_1P02,_),
+  course(math_1P12,_),
   c([math_1P02, math_1P12, math_3P60]).
 course(math_3P73, 'Game Theory') :-
+  course(math_2P72,_),
   c([math_2P72, math_3P73]).
 course(math_2P71, 'Introduction to Combinatorics') :-
   c([math_2P71]).
   % Prerequisite(s): two 4U/M mathematics credits or permission of the instructor.
 course(math_2P72, 'Discrete Optimization') :-
+  course(math_1P12,_),
   c([math_1P12, math_2P72]).
+course(math_2P03, 'Multivariate and Vector Calculus') :-
+  course(math_1P02,_),
+  course(math_1P06,_),
+  c([math_1P02, math_1P06, math_2P03]).
 course(math_2P81, 'Probability') :-
+  course(math_2P03,_),
   c([math_2P03, math_2P81]).
   % Special case: math_2P03 can be a prereq OR coreq.
 course(cosc_2P03, 'Advanced Data Structures') :-
+  course(cosc_1P03,_),
   c([cosc_1P03, cosc_2P03]).
 course(cosc_2P12, 'Computer Organization and Assembly Language') :-
+  course(cosc_1P03,_),
   c([cosc_1P03, cosc_2P12]).
 course(cosc_2P13, 'Introduction to Operating Systems') :-
+  course(cosc_2P12,_),
   c([cosc_2P12, cosc_2P13]).
 course(cosc_2P32, 'File and Database Systems') :-
+  course(cosc_2P03,_),
   c([cosc_2P03, cosc_2P32]).
 course(cosc_2P89, 'Internet Technologies') :-
+  course(cosc_1P03,_),
   c([cosc_1P03, cosc_2P89]).
 course(cosc_2P90, 'Programming Languages and Object-Orientation') :-
+  course(cosc_1P03,_),
   c([cosc_1P03, cosc_2P90]).
 course(cosc_2P91, 'Procedural Programming') :-
+  course(cosc_1P03,_),
   c([cosc_1P03, cosc_2P91]).
 course(cosc_2P93, 'Logic Programming') :-
+  course(cosc_2P03,_),
   c([cosc_2P03, cosc_2P93]).
-course(cosc_2P96, 'Introduction to 3D Modelling and Animation') :- % TODO: probably remove, not really part of COSC undergrad.
+course(cosc_2P96, 'Introduction to 3D Modelling and Animation') :-
   c([cosc_2P96]).
 course(cosc_3F00, 'Software Engineering') :-
+  course(cosc_2P03,_),
   c([cosc_2P03, cosc_3F00]).
 %  c([one_and_one-half_cosc_credits]). % TODO: use a different name than what's used for specific courses
                                       % TODO: have shell determine first if requirement met by counting, if not, then ask
@@ -95,57 +134,83 @@ course(cosc_3P01, 'Introduction to Computer Networking') :-
   course(math_1P67,_),
   c([cosc_2P03, cosc_2P13, math_1P67, cosc_3P01]).
 course(cosc_3P03, 'Algorithms') :-
+  course(cosc_2P03,_),
   c([cosc_2P03, cosc_3P03]).
 course(cosc_3P40, 'Advanced Object-Oriented Programming') :-
 %  c([two_cosc_credits]). % TODO
   c([cosc_3P40]).
 course(cosc_3P71, 'Artificial Intelligence') :-
+  course(cosc_2P03,_),
   c([cosc_2P03, cosc_3P71]).
 course(cosc_3P92, 'Computer Architecture') :-
+  course(cosc_2P13,_),
   c([cosc_2P13, cosc_3P92]).
 course(cosc_3P93, 'Parallel Computing') :-
+  course(cosc_2P13,_),
   c([cosc_2P13, cosc_3P93]).
 course(cosc_3P94, 'Introduction to Human Computer Interaction') :-
 %  c(two_cosc_credits). % TODO
   c([cosc_3P94]).
 course(cosc_3P95, 'Embedded Software') :-
+  course(cosc_2P13,_),
   c([cosc_2P13, cosc_3P95]).
 course(cosc_3P96, 'Discrete Event Simulation') :-
   c([cosc_3P96]).
 course(cosc_3P98, 'Computer Graphics') :-
 %  c([three_cosc_credits]). % TODO
+  course(cosc_2P03,_),
+  course(math_1P12,_),
   c([cosc_2P03, math_1P12, cosc_3P98]).
 course(cosc_3P99, 'Computing Project') :-
+  course(cosc_2P03,_),
   c([cosc_2P03, cosc_3P99]).
 course(cosc_3V97, 'Mobile Computing') :-
+  course(cosc_2P13,_),
+  course(cosc_2P32,_),
   c([cosc_2P13, cosc_2P32, cosc_3V97]).
 course(cosc_4F90, 'Computing Project') :-
+  course(cosc_3F00,_),
   c([cosc_3F00, cosc_4F90]).
 course(cosc_4P03, 'Advanced Algorithms') :-
+  course(cosc_3P03,_),
   c([cosc_3P03, cosc_4P03]).
 course(cosc_4P13, 'Operating Systems: Design and Implementation') :-
+  course(cosc_2P13,_),
+  course(cosc_2P91,_),
   c([cosc_2P13, cosc_2P91, cosc_4P13]).
 course(cosc_4P14, 'Computer Networks') :-
+  course(cosc_3P01,_),
   c([cosc_3P01, cosc_4P14]).
 course(cosc_4P41, 'Functional Programming') :-
 %  c(three_and_one-half_cosc_credits). % TODO
   c([cosc_4P41]).
 course(cosc_4P42, 'Formal Methods in Software Engineering') :-
 %  c(three_and_one-half_cosc_credits). % TODO
+  course(math_1P67,_),
   c([math_1P67, cosc_4P42]).
 course(cosc_4P61, 'Theory of Computation') :-
+  course(math_1P67,_),
   c([math_1P67, cosc_4P61]).
 course(cosc_4P75, 'Compiler Construction') :-
+  course(cosc_2P03,_),
+  course(cosc_2P12,_),
+  course(cosc_2P90,_),
   c([cosc_2P03, cosc_2P12, cosc_2P90, cosc_4P75]).
 course(cosc_4P76, 'Machine Learning') :-
+  course(cosc_3P71,_),
   c([cosc_3P71, cosc_4P76]).
 course(cosc_4P78, 'Robotics') :-
+  course(cosc_3P71,_),
   c([cosc_3P71, cosc_4P78]).
 course(cosc_4P79, 'Expert Systems') :-
+  course(cosc_2P93,_),
+  course(cosc_3P71,_),
   c([cosc_2P93, cosc_3P71, cosc_4P79]).
 course(cosc_4P80, 'Artificial Neural Networks') :-
+  course(cosc_3P71,_),
   c([cosc_3P71, cosc_4P80]).
 course(cosc_4P87, 'Foundations of Reasoning under Uncertainty') :-
+  course(cosc_3P71,_),
   c([cosc_3P71, cosc_4P87]).
 course(cosc_4P98, 'Topics in Computer Media and Digital Audio') :-
   c([cosc_4P98]).
@@ -157,12 +222,15 @@ course(cosc_0N02, 'Co-op Work Placement II') :-
 course(cosc_0N03, 'Co-op Work Placement III') :-
   c([cosc_0N03]).
 course(cosc_2C01, 'Co-op Reflective Learning and Integration I') :-
+  course(scie_0N90,_),
   c([scie_0N90, cosc_2C01]).
 %  corequisite(course(cosc_0N01)). % TODO: make a new predicate for coreqs
 course(cosc_2C02, 'Co-op Reflective Learning and Integration II') :-
+  course(scie_0N90,_),
   c([scie_0N90, cosc_2C02]).
 %  corequisite(course(cosc_0N02)). % TODO
 course(cosc_2C03, 'Co-op Reflective Learning and Integration III') :-
+  course(scie_0N90,_),
   c([scie_0N90, cosc_2C03]).
 %  corequisite(course(cosc_0N03)). % TODO
 course(scie_0N90, 'Co-op Training and Development') :-
