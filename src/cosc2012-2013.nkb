@@ -155,9 +155,7 @@ course(cosc_0N03, 'Co-op Work Placement III') :-
   c([cosc_0N03]).
 course(cosc_2C01, 'Co-op Reflective Learning and Integration I') :-
   c([scie_0N90, cosc_2C01]).
-%  corequisite(course(cosc_0N01)). % TODO: easiest to just include in c([...])
-                                   %       but then user won't know it's a coreq,
-                                   %       so make a new predicate for it?
+%  corequisite(course(cosc_0N01)). % TODO: make a new predicate for coreqs
 course(cosc_2C02, 'Co-op Reflective Learning and Integration II') :-
   c([scie_0N90, cosc_2C02]).
 %  corequisite(course(cosc_0N02)). % TODO
@@ -168,7 +166,7 @@ course(scie_0N90, 'Co-op Training and Development') :-
   c([scie_0N90]).
 
 
-top_goal(X) :- option(X).
+top_goal(X) :- degree(X).
 
 % TODO: need more lists, one for each option (and possibly more for abstraction)
 %       if an answer is chosen that doesn't have an accompanying list, inference fails;
@@ -177,8 +175,7 @@ top_goal(X) :- option(X).
 % (!) The part below here is messy due to testing, should be cleaned up.
 %     The final version may look very different.
 
-courses(1,[cosc_1P02, cosc_1P03, cosc_2P03, cosc_1P50]). % TEST
-courses(4,[cosc_1P02, cosc_1P03, cosc_1P50]).            % TEST
+courses(4,[cosc_1P02, cosc_1P03, cosc_1P50]).            % TEST then remove
 
 concentration_requirements(software_engineering) :-
   course(cosc_2P03,_),
@@ -277,8 +274,8 @@ courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
 
 courses(honours,[]).
 
-option(pass) :-
-  degree(pass),
+degree(pass) :-
+  program(pass),
   core(first_year),
   core(second_year),
   core(third_year).
@@ -308,25 +305,25 @@ Year 3
 
 % TODO: replace these test predicates with the real ones
 
-option(2) :- % honours with grad school entry
-  degree(honours), % honours requires a minor or grad school requirements
+degree(2) :- % honours with grad school entry
+  program(honours), % honours requires a minor or grad school requirements
   honours_requirement('grad school entry'),
   core(first).
 
-option(honours_grad_ai) :-  % honours with grad school entry and concentration in intelligent systems
-  degree(honours),
+degree(honours_grad_ai) :-  % honours with grad school entry and concentration in intelligent systems
+  program(honours),
   honours_requirement('grad school entry'),
   concentration(intelligent_systems), % matching complete, now check courses
   concentration_requirements(intelligent_systems). % TODO
 
 
-option(3) :-
-  degree(honours),
+degree(3) :-
+  program(honours),
   honours_requirement(minor),
   core(first).
 
-option(4) :-
-  degree(co-op),
+degree(4) :-
+  program(co-op),
   course(cosc_1P02,_),
   course(cosc_1P03,_),
   course(cosc_1P50,_).
@@ -334,7 +331,7 @@ option(4) :-
 % TODO: make different asks for different types of questions.
 
 c(X) :- ask_list(course,X). % NOTE: 'course' is the attribute being asserted, not 'c'.
-degree(X) :- menuask(degree,X,[pass,honours,co-op]).
+program(X) :- menuask(program,X,[pass,honours,co-op]).
 concentration(X) :- menuask(concentration,X,[intelligent_systems,software_engineering,none]).
 honours_requirement(X) :- menuask(honours_requirement,X,['grad school entry',minor]).
 
