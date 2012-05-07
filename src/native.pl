@@ -80,9 +80,7 @@ solve :-
   known(kb,yes), % Only continue if a KB has been loaded.
   abolish(known/3),
   prove(top_goal(X),[],0),
-%write('The answer is '),write(X),nl, % the chosen option
   courses(X,Courses), % Use the list of courses that belongs to the answer.
-%write(Courses),nl, % list of courses that belongs to that option
   write('That''s it! Here are the courses you should consider taking:'),nl,nl,
   write_advice(Courses),nl,
   abolish(known/1), % Get rid of any previous answers.
@@ -127,11 +125,9 @@ dump :-
 dump :-
   write('You must load a knowledge base before you can dump.'),nl.
 
-% If there are multiple facts, split and write them nicely.
-dump_rule((A,B)) :- 
+dump_rule((A,B)) :- % If there are multiple facts, split and write them nicely.
   !, dump_rule(A), write(' and '), dump_rule(B).
-% Else write the single fact.
-dump_rule(Body) :-
+dump_rule(Body) :-  % Else write the single fact.
   write(Body).
 
 % "ask" asks the user a yes or no question.
@@ -141,14 +137,10 @@ dump_rule(Body) :-
 ask_list(_,[],_).
 ask_list(A,[V|Rest],H) :- % If we're on the last item, check if prereqs met before asking.
   Rest = [],
-  %write('on last item...'),nl,
   retractall(credit(yes)), % Remove all yes answers.
   ( credit(no), write('auto answer no'),nl, asserta(known(no,A,V)); % At least one prereq not met.
     write('asking'),nl, ask(A,V,H) % Safe to ask.
   ), !. 
-  %ask(A,V,H),
-  %ask_list(A,Rest,H),
-  %!.
 ask_list(A,[V|Rest],H) :-
   ask(A,V,H),
   ask_list(A,Rest,H).
@@ -178,7 +170,6 @@ ask(A,V,Hist) :-                  % If we get here, we need to ask.
   get_user(Y,Hist),nl,
   asserta(known(Y,A,V)),          % Remember it so we don't ask again.
   asserta(credit(Y)),write(Y),nl.
-  %Y = yes.                       % Succeed or fail based on answer.
 
 % "menuask" is like ask, only it gives the user a menu to to choose
 % from rather than a yes or no answer. In this case there is no
