@@ -136,7 +136,19 @@ dump_rule(Body) :-
 
 % "ask" asks the user a yes or no question.
 
-ask_list(_,[],_).                 % Recurvisely ask a list of questions.
+% Recurvisely ask a list of questions.
+% NOTE: A dirty way of enforcing prereqs, can improve it later.
+ask_list(_,[],_).
+ask_list(A,[V|Rest],H) :- % If we're on the last item, check if prereqs met before asking.
+  Rest = [],
+  %write('on last item...'),nl,
+  retractall(credit(yes)), % Remove all yes answers.
+  ( credit(no), write('auto answer no'),nl, asserta(known(no,A,V)); % At least one prereq not met.
+    write('asking'),nl, ask(A,V,H) % Safe to ask.
+  ), !. 
+  %ask(A,V,H),
+  %ask_list(A,Rest,H),
+  %!.
 ask_list(A,[V|Rest],H) :-
   ask(A,V,H),
   ask_list(A,Rest,H).
@@ -147,6 +159,7 @@ ask(Attribute,Value,_) :-
 
 ask(Attribute,Value,_) :-
   known(_,course,Value),          % Succeed if a course is not "yes" (i.e. no).
+  asserta(credit(no)),            % Keep track of unmet prereq.
   !.
 
 ask(Attribute,Value,_) :-
@@ -163,7 +176,8 @@ ask(A,V,Hist) :-                  % If we get here, we need to ask.
   write(A :V),                    
   write('? (yes or no) '),
   get_user(Y,Hist),nl,
-  asserta(known(Y,A,V)).          % Remember it so we don't ask again.
+  asserta(known(Y,A,V)),          % Remember it so we don't ask again.
+  asserta(credit(Y)),write(Y),nl.
   %Y = yes.                       % Succeed or fail based on answer.
 
 % "menuask" is like ask, only it gives the user a menu to to choose
@@ -234,6 +248,7 @@ prove(true,_,_) :- !. % Base case, goal proven.
 prove(menuask(X,Y,Z),Hist,_) :-
   menuask(X,Y,Z,[menuask(X,Y,Z)|Hist]), !. % Call directly & save in history.
 prove(ask_list(X,Y),Hist,_) :-
+  retractall(credit(_)), % Get rid of any previously saved answers.
   ask_list(X,Y,[ask_list(X,Y)|Hist]), !. % Call directly & save in history.
 prove((Goal,Rest),Hist,N) :- % Multiple goals.
   prove(Goal,Hist,N), % Solve current goal.
