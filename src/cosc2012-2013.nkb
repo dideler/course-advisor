@@ -214,7 +214,12 @@ core(second_year) :-
   course(cosc_2P13,_),
   course(cosc_2P32,_),
   course(cosc_2P90,_).
-  % TODO: 2P91 or 2P93
+  % TODO: 2P91 or 2P93, use menuask?
+
+core(third_year) :-
+  course(cosc_3F00,_).
+  % TODO: 3P01 or 3P71 or 3P92
+  % TODO: non-pass degrees also have 3P03 as a core
 
 % TODO: more descriptive names than "1", "2", etc.
 % TODO: remove underscores, add quotes. e.g. software_engineering -> 'software engineering'
