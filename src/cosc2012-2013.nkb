@@ -10,6 +10,7 @@
 
 % TODO: make sure there's no errors in the course logic
 % TODO: better naming (e.g. c([...]) is not descriptive)
+% TODO: remove underscores, add quotes. e.g. software_engineering -> 'software engineering'
 
 % course(Code, Name) :-
 %   dependencies([prereqs, etc]).
@@ -155,11 +156,6 @@ top_goal(X) :- option(X).
 %       if an answer is chosen that doesn't have an accompanying list, inference fails;
 %       so it's important that we have lists for all possible answers
 %
-% For example:
-% courses(intelligent_systems, [cosc_3p71, cosc_4p80, ...]).
-% courses(software_engineering, [cosc_2p90, cosc_3f00, ...]).
-% Can put courses in single quotes, but not necessary.
-
 % (!) The part below here is messy due to testing, should be cleaned up.
 %     The final version may look very different.
 
@@ -219,18 +215,29 @@ core(second_year) :-
 core(third_year) :-
   course(cosc_3F00,_).
   % TODO: 3P01 or 3P71 or 3P92
-  % TODO: non-pass degrees also have 3P03 as a core
 
-% TODO: more descriptive names than "1", "2", etc.
-% TODO: remove underscores, add quotes. e.g. software_engineering -> 'software engineering'
+core(third_year_non_pass) :-
+  core(third_year),
+  course(cosc_3P03,_).
 
-option(1) :-
-  degree(pass),
-  core(first).
+core(fourth_year) :-
+  course(cosc_4P61,_).
+
+% Although these are in the calendar, I don't think they're required to graduate.
+% TODO: verify with Gord.
+core(co-op) :- 
+  course(scie_0N90,_),
+  course(cosc_0N01,_),
+  course(cosc_2C01,_),
+  course(cosc_0N02,_),
+  course(cosc_2C02,_),
+  course(cosc_0N03,_),
+  course(cosc_2C03,_).
 
 courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
               math_1P98, cosc_2P03, cosc_2P12, cosc_2P13, cosc_2P32, math_1P05,
-              math_1P06, cosc_2P90, cosc_3F00, cosc_2P91, cosc_2P93]).
+              math_1P06, cosc_2P90, cosc_3F00]).
+              % TODO: one of cosc_2P91, cosc_2P93
               % TODO: one of cosc_3P01, cosc_3P71, cosc_3P92
               % TODO: one humanities context credit
               % TODO: one-half elective credit
@@ -240,8 +247,13 @@ courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
               % TODO: one-half cosc credit
               % TODO: two elective credits
 
+courses(honours,[]).
+
 option(pass) :-
   degree(pass),
+  core(first_year),
+  core(second_year),
+  core(third_year).
 
 
 /*
@@ -265,6 +277,8 @@ Year 3
   one-half COSC credit (see program note 10)
   two elective credits (see program notes 2 and 10)
 */
+
+% TODO: replace these test predicates with the real ones
 
 option(2) :- % honours with grad school entry
   degree(honours), % honours requires a minor or grad school requirements
