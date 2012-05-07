@@ -246,7 +246,6 @@ top_goal(X) :- degree(X).
 % (!) The part below here is messy due to testing, should be cleaned up.
 %     The final version may look very different.
 
-courses(4,[cosc_1P02, cosc_1P03, cosc_3P01, cosc_1P50]).        % TEST then remove
 
 concentration_requirements(software_engineering) :-
   course(cosc_2P03,_),
@@ -348,7 +347,25 @@ courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
               % TODO: one-half cosc credit
               % TODO: two elective credits
 
-% TODO: courses lists for all possible degrees
+courses(honours_minor,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
+              math_1P98, cosc_2P03, cosc_2P12, cosc_2P13, cosc_2P32, math_1P05,
+              math_1P06, cosc_2P90, cosc_3P03, cosc_3F00, cosc_4P61,
+              'minor not in APCO or an approved set of at least 4 cohesive credits in an area other than COSC or APCO']).
+              % TODO: one of cosc_2P91, cosc_2P93
+              % TODO: one of cosc_3P01, cosc_3P71, cosc_3P92
+              % TODO: one humanities context credit
+              % TODO: one-half elective credit
+              % TODO: one social sciences context credit
+              % TODO: one-half sciences context credit
+              % TODO: one-half elective credit
+              % TODO: one-half cosc credit
+              % TODO: two elective credits
+
+courses(4,[cosc_1P02, cosc_1P03, cosc_3P01, cosc_1P50]).  % TODO: TEST then remove
+
+/********************************************************
+ * TODO: courses/2 predicates for all possible degrees! *
+ ********************************************************/
 
 /* Pass degree */
 degree(pass) :-
@@ -361,6 +378,7 @@ degree(pass) :-
 degree(honours_minor) :- % TODO: finish, add core courses...
   program(honours),
   honours_requirement(minor),
+  concentration(none),
   core(first_year),
   core(second_year),
   core(third_year_nonpass),
@@ -394,6 +412,7 @@ degree(honours_grad) :- % TODO: finish
   honours_requirement('grad school entry'),
   % TODO: check courses for grad school entry;
   %       need to write the logic to choose one out of the group of courses.
+  concentration(none),
   core(first_year),
   core(second_year),
   core(third_year_nonpass),
@@ -431,6 +450,7 @@ degree(honours_grad_se) :- % TODO: finish
 degree(co-op_minor) :-
   program(co-op),
   honours_requirement(minor),
+  concentration(none),
   core(co-op),
   core(first_year),
   core(second_year),
@@ -441,6 +461,8 @@ degree(co-op_minor) :-
 degree(co-op_minor_ai) :-
   program(co-op),
   honours_requirement(minor),
+  concentration(intelligent_systems),
+  concentration_requirements(intelligent_systems),
   core(co-op),
   core(first_year),
   core(second_year),
@@ -451,6 +473,8 @@ degree(co-op_minor_ai) :-
 degree(co-op_minor_se) :-
   program(co-op),
   honours_requirement(minor),
+  concentration(software_engineering),
+  concentration_requirements(software_engineering),
   core(co-op),
   core(first_year),
   core(second_year),
@@ -463,6 +487,7 @@ degree(co-op_grad) :-
   honours_requirement('grad school entry'),
   % TODO: check courses for grad school entry;
   %       need to write the logic to choose one out of the group of courses.
+  concentration(none),
   core(co-op),
   core(first_year),
   core(second_year),
@@ -476,6 +501,8 @@ degree(co-op_grad_ai) :-
   honours_requirement('grad school entry'),
   % TODO: check courses for grad school entry;
   %       need to write the logic to choose one out of the group of courses.
+  concentration(intelligent_systems),
+  concentration_requirements(intelligent_systems),
   core(co-op),
   core(first_year),
   core(second_year),
@@ -489,6 +516,8 @@ degree(co-op_grad_se) :-
   honours_requirement('grad school entry'),
   % TODO: check courses for grad school entry;
   %       need to write the logic to choose one out of the group of courses.
+  concentration(software_engineering),
+  concentration_requirements(software_engineering),
   core(co-op),
   core(first_year),
   core(second_year),
@@ -516,7 +545,7 @@ degree(4) :-
 
 ***/
 
-% TODO: make different asks for different types of questions.
+% TODO: maybe make different asks for different types of questions?
 
 c(X) :- ask_list(course,X). % NOTE: 'course' is the attribute being asserted, not 'c'.
 program(X) :- menuask(program,X,[pass,honours,co-op]).
