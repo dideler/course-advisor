@@ -272,7 +272,7 @@ courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
               % TODO: one-half cosc credit
               % TODO: two elective credits
 
-courses(honours,[]). % TODO
+% TODO: courses lists for all possible degrees
 
 degree(pass) :-
   program(pass),
@@ -302,8 +302,6 @@ Year 3
   one-half COSC credit (see program note 10)
   two elective credits (see program notes 2 and 10)
 */
-
-% TODO: replace these test predicates with the real ones
 
 degree(honours_minor) :- % TODO: finish, add core courses...
   program(honours),
@@ -338,7 +336,26 @@ degree(honours_grad_se) :- % TODO: finish
   concentration(software_engineering),
   concentration_requirements(software_engineering).
 
-% TODO: co-op
+% TODO: finish co-op degrees. don't forget to add core(co-op)!
+degree(co-op_minor) :-
+  program(co-op),
+  honours_requirement(minor).
+degree(co-op_minor_ai) :-
+  program(co-op),
+  honours_requirement(minor).
+degree(co-op_minor_se) :-
+  program(co-op),
+  honours_requirement(minor).
+degree(co-op_grad) :-
+  program(co-op),
+  honours_requirement('grad school entry').
+degree(co-op_grad_ai) :-
+  program(co-op),
+  honours_requirement('grad school entry').
+degree(co-op_grad_se) :-
+  program(co-op),
+  honours_requirement('grad school entry').
+
 
 /*** stuff for testing ***/
 

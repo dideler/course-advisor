@@ -293,12 +293,10 @@ write_advice([]).
 write_advice([Course_code|Rest]) :-
   known(Credit,course,Course_code),
 %  write(Course_code), write(' = '), write(Credit), nl, % TODO: remove
-  ( Credit == no,
+  ( Credit == no, % TODO: safer to suggest course if credit is not yes.
     atom_concat('course(',Course_code,GoalTemp), % TODO: modify once KB is english-ified
     atom_concat(GoalTemp,',Name)',GoalAtom), % Goal is now an atom, won't unify yet.
-%    write(GoalAtom),nl, % TODO: remove
     atom_to_term(GoalAtom,Goal,_), % Converts Goal to a term, now it can unify.
-%    !,
     clause(Goal,_), tab(2), write(Goal), nl,
     write_advice(Rest) ;
     write_advice(Rest)
