@@ -41,6 +41,8 @@ course(math_1P67, 'Mathematics for Computer Science') :-
 course(math_1P12, 'Linear Algebra I') :-
   c([math_1P12]).
   % Prerequisite(s): two grade 12 mathematics credits or permission of instructor.
+course(math_2P12, 'Linear Algebra II') :-
+  c([math_1P12, math_2P12]).
 course(math_1P98, 'Practical Statistics') :-
   c([math_1P98]).
   % Prerequisite(s): one grade 12 mathematics credit or MATH 1P20.
@@ -49,6 +51,22 @@ course(math_1P05, 'Applied Calculus I') :-
   % Prerequisite(s): two grade 12 mathematics credits including MCV4U or permission of the instructor.
 course(math_1P06, 'Applied Calculus II') :-
   c([math_1P05, math_1P06]).
+course(math_2P75, 'Introductory Financial Mathematics') :-
+  c([math_1P97, math_1P98, math_2P75]).
+course(math_3P12, 'Applied Algebra') :-
+  c([math_2P12, math_3P12]).
+course(math_3P60, 'Numerical Methods') :-
+  c([math_1P02, math_1P12, math_3P60]).
+course(math_3P73, 'Game Theory') :-
+  c([math_2P72, math_3P73]).
+course(math_2P71, 'Introduction to Combinatorics') :-
+  c([math_2P71]).
+  % Prerequisite(s): two 4U/M mathematics credits or permission of the instructor.
+course(math_2P72, 'Discrete Optimization') :-
+  c([math_1P12, math_2P72]).
+course(math_2P81, 'Probability') :-
+  c([math_2P03, math_2P81]).
+  % Special case: math_2P03 can be a prereq OR coreq.
 course(cosc_2P03, 'Advanced Data Structures') :-
   c([cosc_1P03, cosc_2P03]).
 course(cosc_2P12, 'Computer Organization and Assembly Language') :-
@@ -187,10 +205,20 @@ concentration_requirements(intelligent_systems) :-
   % TODO: one and one-half credits from COSC 4F90, 4P76, 4P78, 4P79, 4P80, 4P87
 
 
-% One additional cosc credit, one of the first line, one of the second line.
-% TODO: consider splitting up the two groups. easier to check if requirements for each group met.
-courses('Graduate School Entry Requirements',[cosc_4P42, math_2P75, math_3P12, math_3P60, math_3P73,
-                                              math_2P12, math_2P71, math_2P72, math_2P81]).
+% Graduate school entry requirements.
+% TODO: add these missing courses to KB (!)
+grad_school(group_one) :- % TODO: only one course from this group! use menuask?
+  course(cosc_4P42,_),
+  course(math_2P75,_),
+  course(math_3P12,_),
+  course(math_3P60,_),
+  course(math_3P73,_).
+grad_school(group_two) :- % TODO: only one course from this group! use menuask?
+  course(math_2P12,_),
+  course(math_2P71,_),
+  course(math_2P72,_),
+  course(math_2P81,_).
+% TODO: one additional COSC credit
 
 % Required courses that are shared between all COSC degree types.
 core(first_year) :-
@@ -312,51 +340,3 @@ honours_requirement(X) :- menuask(honours_requirement,X,['grad school entry',min
 
 multivalued(course). % Multivalued because a rule can have many courses.
 multivalued(c). % TODO: remove, not being used -- verify before removing
-
-% Example of a possible recommendation (taken from course calendar)
-% -----------------------------------------------------------------
-%
-% Computer Science as a second degree program.
-% - Holding an honours or Pass degree in another discipline
-% - The additional courses taken for a second degree in Computer Science must
-%   include a minimum of five (for a subsequent 20 credit degree) or four
-%   (for a second Pass degree) Brock cosc credits. All elective credits should
-%   be numbered 2(alpha)00 or above.
-%
-% Honours (TODO)
-%
-% BSc with Major (TODO)
-%
-% Pass
-% Year 1
-%   cosc 1P02, 1P03 and 1P50
-%   math 1P12, 1P66, 1P67 and 1P98
-% Spring/Summer Sessions:
-%   cosc 2P03
-% Year 2
-%   cosc 2P12, 2P13, 2P32, 2P90 and 3F00
-%   one-half cosc credit
-%   one cosc credit numbered 2(alpha)90 or above
-%
-%
-%
-%cosc as second degree program honours :-
-%
-%cosc as second degree program bsc with major :-
-%
-%cosc as second degree program pass :-
-%  course(cosc_1P02),
-%  course(cosc_1P03),
-%  course(cosc_1P50),
-%  course(math_1P12),
-%  course(math_1P66),
-%  course(math_1P67),
-%  course(math_1P98),
-%  course(cosc_2P03),
-%  course(cosc_2P12),
-%  course(cosc_2P13),
-%  course(cosc_2P32),
-%  course(cosc_2P90),
-%  course(cosc_3F00),
-%  course(one-half cosc credit),
-%  course(one cosc credit 2x90 or above).
