@@ -196,10 +196,17 @@ concentration_requirements(intelligent_systems) :-
 courses('Graduate School Entry Requirements',[cosc_4P42, math_2P75, math_3P12, math_3P60, math_3P73,
                                               math_2P12, math_2P71, math_2P72, math_2P81]).
 
-core(first) :- % TODO: remove, just a test
-  c([cosc_1P02, cosc_1P03]), % 1P02 is a prereq for 1P03. 
-  c([cosc_1P03, cosc_2P03]), % Is there a better way to do this?
-  c([cosc_1P50]).
+% Required courses that are shared between all COSC degree types.
+core(first_year) :-
+  course(cosc_1P02,_),
+  course(cosc_1P03,_),
+  course(cosc_1P50,_),
+  course(math_1P12,_),
+  course(math_1P66,_),
+  course(math_1P67,_),
+  course(math_1P98,_),
+  course(math_1P05,_),
+  course(math_1P06,_).
 
 % TODO: more descriptive names than "1", "2", etc.
 % TODO: remove underscores, add quotes. e.g. software_engineering -> 'software engineering'
