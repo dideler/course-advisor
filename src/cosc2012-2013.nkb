@@ -350,12 +350,14 @@ courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
 
 % TODO: courses lists for all possible degrees
 
+/* Pass degree */
 degree(pass) :-
   program(pass),
   core(first_year),
   core(second_year),
   core(third_year).
 
+/* Honours with a minor */
 degree(honours_minor) :- % TODO: finish, add core courses...
   program(honours),
   honours_requirement(minor),
@@ -364,6 +366,7 @@ degree(honours_minor) :- % TODO: finish, add core courses...
   core(third_year_nonpass),
   core(fourth_year).
 
+/* Honours with a minor and concentration in Intelligent Systems */
 degree(honours_minor_ai) :- % TODO: finish
   program(honours),
   honours_requirement(minor),
@@ -374,6 +377,7 @@ degree(honours_minor_ai) :- % TODO: finish
   core(third_year_nonpass),
   core(fourth_year).
 
+/* Honours with a minor and concentration in Software Engineering */
 degree(honours_minor_se) :- % TODO: finish
   program(honours),
   honours_requirement(minor),
@@ -384,47 +388,114 @@ degree(honours_minor_se) :- % TODO: finish
   core(third_year_nonpass),
   core(fourth_year).
 
-
+/* Honours with graduate school entry requirements */
 degree(honours_grad) :- % TODO: finish
   program(honours),
-  honours_requirement('grad school entry').
+  honours_requirement('grad school entry'),
+  % TODO: check courses for grad school entry;
+  %       need to write the logic to choose one out of the group of courses.
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
 
-% Honours with graduate school entry and concentration in intelligent systems.
+/* Honours with graduate school entry requirements
+ * and concentration in Intelligent Systems */
 degree(honours_grad_ai) :-  % TODO: finish
   program(honours),
   honours_requirement('grad school entry'),
-  concentration(intelligent_systems), % matching complete, now check courses
-  concentration_requirements(intelligent_systems).
+  % TODO: check courses for grad school entry;
+  %       need to write the logic to choose one out of the group of courses.
+  concentration(intelligent_systems), % Locks the user in this degree choice.
+  concentration_requirements(intelligent_systems), % Now check the courses.
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
 
+/* Honours with a graduate school entry requirements
+ * and concentration in Software Engineering */
 degree(honours_grad_se) :- % TODO: finish
   program(honours),
   honours_requirement('grad school entry'),
+  % TODO: check courses for grad school entry;
+  %       need to write the logic to choose one out of the group of courses.
   concentration(software_engineering),
-  concentration_requirements(software_engineering).
+  concentration_requirements(software_engineering),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
 
-% TODO: finish co-op degrees. don't forget to add core(co-op)!
-/*
+/* Co-op (Honours) with a minor */
 degree(co-op_minor) :-
   program(co-op),
-  honours_requirement(minor).
+  honours_requirement(minor),
+  core(co-op),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
+
+/* Co-op (Honours) with a minor and concentration in Intelligent Systems */
 degree(co-op_minor_ai) :-
   program(co-op),
-  honours_requirement(minor).
+  honours_requirement(minor),
+  core(co-op),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
+
+/* Co-op (Honours) with a minor and concentration in Software Engineering */
 degree(co-op_minor_se) :-
   program(co-op),
-  honours_requirement(minor).
+  honours_requirement(minor),
+  core(co-op),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
+
+/* Co-op (Honours) with graduate school entry requirements */
 degree(co-op_grad) :-
   program(co-op),
-  honours_requirement('grad school entry').
+  honours_requirement('grad school entry'),
+  % TODO: check courses for grad school entry;
+  %       need to write the logic to choose one out of the group of courses.
+  core(co-op),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
+
+/* Co-op (Honours) with graduate school entry requirements
+ * and concentration in Intelligent Systems */
 degree(co-op_grad_ai) :-
   program(co-op),
-  honours_requirement('grad school entry').
+  honours_requirement('grad school entry'),
+  % TODO: check courses for grad school entry;
+  %       need to write the logic to choose one out of the group of courses.
+  core(co-op),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
+
+/* Co-op (Honours) with graduate school entry requirements
+ * and concentration in Software Engineering */
 degree(co-op_grad_se) :-
   program(co-op),
-  honours_requirement('grad school entry').
-*/
+  honours_requirement('grad school entry'),
+  % TODO: check courses for grad school entry;
+  %       need to write the logic to choose one out of the group of courses.
+  core(co-op),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
 
-/*** stuff for testing ***/
+/*** stuff for testing
 
 degree(2) :- % honours with grad school entry
   program(honours), % honours requires a minor or grad school requirements
@@ -442,6 +513,8 @@ degree(4) :-
   course(cosc_1P03,_),
   course(cosc_3P01,_),
   course(cosc_1P50,_).
+
+***/
 
 % TODO: make different asks for different types of questions.
 
