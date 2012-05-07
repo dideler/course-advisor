@@ -208,6 +208,14 @@ core(first_year) :-
   course(math_1P05,_),
   course(math_1P06,_).
 
+core(second_year) :-
+  course(cosc_2P03,_),
+  course(cosc_2P12,_),
+  course(cosc_2P13,_),
+  course(cosc_2P32,_),
+  course(cosc_2P90,_).
+  % TODO: 2P91 or 2P93
+
 % TODO: more descriptive names than "1", "2", etc.
 % TODO: remove underscores, add quotes. e.g. software_engineering -> 'software engineering'
 
