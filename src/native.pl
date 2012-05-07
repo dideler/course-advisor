@@ -262,8 +262,8 @@ prove(Goal,Hist,_) :- % Single goal without trace.
 
 how :-
   known(Goal),
-  clause(bird(Goal),Body), % TODO: Change to work with courses KB.
-  prove(Body,[],_),        % e.g. clause(course(Goal),Body). Look at top_goal.
+  clause(degree(Goal),Body), % Get the body from the proven top goal.
+  prove(Body,[],0),
   write_body(4,Body),
   !.
 how :-
