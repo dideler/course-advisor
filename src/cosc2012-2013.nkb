@@ -272,7 +272,7 @@ courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
               % TODO: one-half cosc credit
               % TODO: two elective credits
 
-courses(honours,[]).
+courses(honours,[]). % TODO
 
 degree(pass) :-
   program(pass),
@@ -305,17 +305,47 @@ Year 3
 
 % TODO: replace these test predicates with the real ones
 
+degree(honours_minor) :- % TODO: finish, add core courses...
+  program(honours),
+  honours_requirement(minor). 
+
+degree(honours_minor_ai) :- % TODO: finish
+  program(honours),
+  honours_requirement(minor),
+  concentration(intelligent_systems),
+  concentration_requirements(intelligent_systems).
+
+degree(honours_minor_se) :- % TODO: finish
+  program(honours),
+  honours_requirement(minor),
+  concentration(software_engineering),
+  concentration_requirements(software_engineering).
+
+degree(honours_grad) :- % TODO: finish
+  program(honours),
+  honours_requirement('grad school entry').
+
+% Honours with graduate school entry and concentration in intelligent systems.
+degree(honours_grad_ai) :- TODO: finish
+  program(honours),
+  honours_requirement('grad school entry'),
+  concentration(intelligent_systems), % matching complete, now check courses
+  concentration_requirements(intelligent_systems).
+
+degree(honours_grad_se) :- % TODO: finish
+  program(honours),
+  honours_requirement('grad school entry'),
+  concentration(software_engineering),
+  concentration_requirements(software_engineering).
+
+% TODO: co-op
+
+/*** stuff for testing ***/
+
 degree(2) :- % honours with grad school entry
   program(honours), % honours requires a minor or grad school requirements
   honours_requirement('grad school entry'),
   core(first).
-
-degree(honours_grad_ai) :-  % honours with grad school entry and concentration in intelligent systems
-  program(honours),
-  honours_requirement('grad school entry'),
-  concentration(intelligent_systems), % matching complete, now check courses
-  concentration_requirements(intelligent_systems). % TODO
-
 
 degree(3) :-
   program(honours),
@@ -326,6 +356,7 @@ degree(4) :-
   program(co-op),
   course(cosc_1P02,_),
   course(cosc_1P03,_),
+  course(cosc_3P01,_),
   course(cosc_1P50,_).
 
 % TODO: make different asks for different types of questions.
