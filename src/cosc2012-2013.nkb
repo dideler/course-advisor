@@ -17,6 +17,15 @@
 % (!) Each course must contain itself as a dependency,
 %     otherwise the course is solved based solely on its prereqs.
 %     We need to know if the user has the credit for the current course by asking.
+%
+% Course rules may contain more information in a future update.
+% In that case, it will be neater to format the rules such as:
+%
+% course(Code, Name, Description, ...) :-
+%   Name = cosc_1P00,
+%   Description = 'The ultimate course, you will learn everything.',
+%   ...
+%   dependencies([...]).
 
 course(cosc_1P02, 'Introduction to Computer Science') :-
   c([cosc_1P02]).
@@ -28,6 +37,17 @@ course(math_1P66, 'Mathematical Reasoning') :-
   c([math_1P66]).
 course(math_1P67, 'Mathematics for Computer Science') :-
   c([math_1P66, math_1P67]).
+course(math_1P12, 'Linear Algebra I') :-
+  c([math_1P12]).
+  % Prerequisite(s): two grade 12 mathematics credits or permission of instructor.
+course(math_1P98, 'Practical Statistics') :-
+  c([math_1P98]).
+  % Prerequisite(s): one grade 12 mathematics credit or MATH 1P20.
+course(math_1P05, 'Applied Calculus I') :-
+  c([math_1P05]).
+  % Prerequisite(s): two grade 12 mathematics credits including MCV4U or permission of the instructor.
+course(math_1P06, 'Applied Calculus II') :-
+  c([math_1P05, math_1P06]).
 course(cosc_2P03, 'Advanced Data Structures') :-
   c([cosc_1P03, cosc_2P03]).
 course(cosc_2P12, 'Computer Organization and Assembly Language') :-
