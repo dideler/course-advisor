@@ -361,6 +361,8 @@ courses(honours_minor,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, ma
               % TODO: one-half cosc credit
               % TODO: two elective credits
 
+% TODO: all the other honours & co-op degrees, so don't test those as they won't work yet!
+
 courses(4,[cosc_1P02, cosc_1P03, cosc_3P01, cosc_1P50]).  % TODO: TEST then remove
 
 /********************************************************
