@@ -90,6 +90,9 @@ course(cosc_3F00, 'Software Engineering') :-
 %  c([one_and_one-half_cosc_credits]). % TODO: use a different name than what's used for specific courses
                                       % TODO: have shell determine first if requirement met by counting, if not, then ask
 course(cosc_3P01, 'Introduction to Computer Networking') :-
+  course(cosc_2P03,_),
+  course(cosc_2P13,_),
+  course(math_1P67,_),
   c([cosc_2P03, cosc_2P13, math_1P67, cosc_3P01]).
 course(cosc_3P03, 'Algorithms') :-
   c([cosc_2P03, cosc_3P03]).
@@ -175,7 +178,7 @@ top_goal(X) :- degree(X).
 % (!) The part below here is messy due to testing, should be cleaned up.
 %     The final version may look very different.
 
-courses(4,[cosc_1P02, cosc_1P03, cosc_1P50]).            % TEST then remove
+courses(4,[cosc_1P02, cosc_1P03, cosc_3P01, cosc_1P50]).        % TEST then remove
 
 concentration_requirements(software_engineering) :-
   course(cosc_2P03,_),
@@ -241,7 +244,7 @@ core(third_year) :-
   course(cosc_3F00,_).
   % TODO: 3P01 or 3P71 or 3P92
 
-core(third_year_non_pass) :-
+core(third_year_nonpass) :-
   core(third_year),
   course(cosc_3P03,_).
 
@@ -258,6 +261,11 @@ core(co-op) :-
   course(cosc_2C02,_),
   course(cosc_0N03,_),
   course(cosc_2C03,_).
+
+core(minor) :- % FIXME: messy, but running short on time.
+  c(['minor not in APCO or an approved set of at least 4 cohesive credits in an area other than COSC or APCO']).
+
+% TODO: make sure courses/2 contains all prereqs, otherwise they won't show up as suggestions
 
 courses(pass,[cosc_1P02, cosc_1P03, cosc_1P50, math_1P12, math_1P66, math_1P67,
               math_1P98, cosc_2P03, cosc_2P12, cosc_2P13, cosc_2P32, math_1P05,
@@ -280,51 +288,41 @@ degree(pass) :-
   core(second_year),
   core(third_year).
 
-
-/*
-Pass Program
-
-Year 1
-  COSC 1P02, 1P03 and 1P50 (see program note 1)
-  MATH 1P12, 1P66, 1P67 and 1P98
-  one Humanities context credit
-  one-half elective credit (see program note 2)
-Year 2
-  COSC 2P03, 2P12, 2P13 and 2P32
-  MATH 1P05 and 1P06
-  one Social Sciences context credit
-  one-half Sciences context credit
-  one-half elective credit (see program notes 2 and 10)
-Year 3
-  COSC 2P90 and 3F00
-  COSC 2P91 or 2P93
-  one of COSC 3P01, 3P71, 3P92
-  one-half COSC credit (see program note 10)
-  two elective credits (see program notes 2 and 10)
-*/
-
 degree(honours_minor) :- % TODO: finish, add core courses...
   program(honours),
-  honours_requirement(minor). 
+  honours_requirement(minor),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
 
 degree(honours_minor_ai) :- % TODO: finish
   program(honours),
   honours_requirement(minor),
   concentration(intelligent_systems),
-  concentration_requirements(intelligent_systems).
+  concentration_requirements(intelligent_systems),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
 
 degree(honours_minor_se) :- % TODO: finish
   program(honours),
   honours_requirement(minor),
   concentration(software_engineering),
-  concentration_requirements(software_engineering).
+  concentration_requirements(software_engineering),
+  core(first_year),
+  core(second_year),
+  core(third_year_nonpass),
+  core(fourth_year).
+
 
 degree(honours_grad) :- % TODO: finish
   program(honours),
   honours_requirement('grad school entry').
 
 % Honours with graduate school entry and concentration in intelligent systems.
-degree(honours_grad_ai) :- TODO: finish
+degree(honours_grad_ai) :-  % TODO: finish
   program(honours),
   honours_requirement('grad school entry'),
   concentration(intelligent_systems), % matching complete, now check courses
@@ -337,6 +335,7 @@ degree(honours_grad_se) :- % TODO: finish
   concentration_requirements(software_engineering).
 
 % TODO: finish co-op degrees. don't forget to add core(co-op)!
+/*
 degree(co-op_minor) :-
   program(co-op),
   honours_requirement(minor).
@@ -355,7 +354,7 @@ degree(co-op_grad_ai) :-
 degree(co-op_grad_se) :-
   program(co-op),
   honours_requirement('grad school entry').
-
+*/
 
 /*** stuff for testing ***/
 
