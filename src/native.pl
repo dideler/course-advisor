@@ -46,9 +46,9 @@ do(help) :- native_help, !.
 do(load) :- load_kb, !.
 do(solve) :- solve, !.
 do(trace) :- trace_rules, !.
-do(dump) :- !, dump. % Cut before dump so do(X) doesn't execute.
+do(dump) :- !, dump. % Cut before dump so no other do(_) is attempted.
 do(how) :- how, !.
-do(whynot(Goal)) :- whynot(Goal), !.
+do(whynot(Goal)) :- !, whynot(Goal).
 do(quit).
 do(halt).
 do(exit).
@@ -280,11 +280,19 @@ how :-
 how :-
   write('You must solve a task first.'),nl.
 
-whynot(Goal) :-
-  clause(Goal,Body),
-  write_line([Goal,'fails because: ']),
+% whynot(Goal) explains why the Goal solution did not succeed.
+whynot(Goal) :-  % Cannot solve if user queries with the most recent answer.
+  known(Goal),
+  write(Goal),write(' was actually the degree used for the course suggestions.'),nl,
+  write('Did you mean a different type of degree?'),nl,
+  !.
+whynot(Goal) :-  % Otherwise, solve if an answer exists and it's not the most recent.
+  known(_),
+  clause(degree(Goal),Body),
+  write_line([Goal,'fails because: ']),!,
   explain(Body).
-whynot(_).
+whynot(_) :-  % Finally, if there is no history of an answer, let them know.
+  write('You must solve a task first, or, the entered degree does not exist.'),nl.
 
 explain(true).
 explain((Head,Body)) :-
