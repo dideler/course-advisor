@@ -48,13 +48,14 @@ do(solve) :- solve, !.
 do(trace) :- trace_rules, !.
 do(dump) :- !, dump. % Cut before dump so no other do(_) is attempted.
 do(how) :- how, !.
+do(why) :- !, write('why only works during inference. Use ''solve'' first.'),nl.
 do(whynot(Goal)) :- !, whynot(Goal).
 do(quit).
 do(halt).
 do(exit).
 do(X) :-
   write(X),
-  write(' is not a legal command. Type ''help.'' to see legal commands.'), nl,
+  write(' is not a legal command. Type ''help.'' to see legal commands.'),nl,
   fail.
 
 native_help :-
