@@ -155,7 +155,7 @@ ask(Attribute,Value,_) :-
   known(yes,Attribute,Value),     % Succeed if it's known (i.e. yes).
   !. 
 
-ask(Attribute,Value,_) :-
+ask(_,Value,_) :-
   known(_,course,Value),          % Succeed if a course is not "yes" (i.e. no).
   asserta(credit(no)),            % Keep track of unmet prereq.
   !.
