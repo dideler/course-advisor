@@ -73,7 +73,10 @@ native_help :-
   write('    quit. Terminates the program. ''halt.'' and ''exit.'' also work.'),nl.
 
 load_kb :-
-  write('Enter file name in single quotes (ex. ''cosc2012-2013.nkb''.): '),
+  expand_file_name('*.nkb', Files),
+  write('Found the following knowledge bases:'),nl,
+  write_list(2,Files),%nl,
+  write('Enter a file name in single quotes (ex. ''filename.nkb''.): '),
   read(File),
   ( exists_file(File) ->
       load_files(File, [load_type(source),compilation_mode(assert_all)]),
@@ -343,12 +346,22 @@ write_list(N,[H|T], T) :-
 	write(H),
 	nl.
 
+% Write list items on separate lines with a given number of tabs preceding.
+write_list(_, []).
+write_list(N, [H|T]) :-
+  tab(N), write(H), nl,
+  write_list(N, T).
+
+% If only the list is provided, print it without tabs.
+write_list(L) :- write_list(0,L).
+
 write_body(N,(First,Rest)) :-
   tab(N),write(First),nl,
   write_body(N,Rest).
 write_body(N,Last) :-
   tab(N),write(Last),nl.
 
+% Write a list as a line (no commas).
 write_line(L) :-
   flatten(L,LF),
   write_lin(LF).
