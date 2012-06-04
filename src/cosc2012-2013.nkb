@@ -381,6 +381,7 @@ degree(honours_minor) :- % TODO: finish, add core courses...
   program(honours),
   honours_requirement(minor),
   concentration(none),
+  core(minor),
   core(first_year),
   core(second_year),
   core(third_year_nonpass),
