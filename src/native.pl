@@ -42,12 +42,14 @@ greeting :-
   write('Built on top of the native Prolog shell.'),nl,nl,
   native_help.
 
-do(help) :- native_help, !.
-do(load) :- load_kb, !.
-do(solve) :- solve, !.
-do(trace) :- trace_rules, !.
-do(dump) :- !, dump. % Cut before dump so no other do(_) is attempted.
-do(how) :- how, !.
+% do/1 commands are expected at the main menu.
+% Cut before each command so no other do(_) is attempted after failure.
+do(help) :- !, native_help.
+do(load) :- !, load_kb.
+do(solve) :- !, solve.
+do(trace) :- !, trace_rules.
+do(dump) :- !, dump.
+do(how) :- !, how.
 do(why) :- !, write('why only works during inference. Use ''solve'' first.'),nl.
 do(whynot(Goal)) :- !, whynot(Goal).
 do(quit).
@@ -72,10 +74,14 @@ native_help :-
 
 load_kb :-
   write('Enter file name in single quotes (ex. ''cosc2012-2013.nkb''.): '),
-  read(F),
-  my_consult(F),
-  retract(known(kb,no)),
-  asserta(known(kb,yes)).
+  read(File),
+  ( exists_file(File) ->
+      load_files(File, [load_type(source),compilation_mode(assert_all)]),
+      write(File),write(' loaded successfully.'),nl,
+      retract(known(kb,no)),
+      asserta(known(kb,yes));
+      write(File),write(' does not exist. Is the spelling and file path correct?'),nl
+  ).
 
 solve :-
   known(kb,yes), % Only continue if a KB has been loaded.
@@ -359,9 +365,6 @@ flatten([[X|Y]|T], L) :-
   flatten([X|[Y|T]],L), !.
 flatten([H|T],[H|T2]) :-
   flatten(T,T2).
-                                                                    
-my_consult(Files) :-
-  load_files(Files, [load_type(source),compilation_mode(assert_all)]).
 
 %tab(N) :- N =< 0, !.
 %tab(N) :-
