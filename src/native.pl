@@ -121,7 +121,7 @@ trace_rules :- % if we get here, it is the first time trace is called.
 % Reads in the name of a rule (w//o args) then prints out all the rules for it.
 dump :-
   known(kb,yes),
-  write('Enter rule name without arguments (ex. order.): '),
+  write('Enter rule name without arguments (ex. degree.): '),
   read(Rule),
   atom_concat(Rule,'(_)',GoalAtom), % Goal is atom, so variable won't unify.
   %atom_concat(Rule,' iz _',GoalAtom), % TODO: switch to this after KB is english-ified
